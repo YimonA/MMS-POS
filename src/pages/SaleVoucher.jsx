@@ -73,7 +73,7 @@ const SaleVoucher = () => {
       <div className=" h-[40px] flex justify-center gap-3">
         <Link to={"/recent"}>
           <button
-            className={`text-[var(--secondary-color)] px-3 hover:text-[#8AB4F8] active:text-[#8AB4F8] btn-border-table-grid`}
+            className={`h-[40px] text-[var(--secondary-color)] px-3 hover:text-[#8AB4F8] active:text-[#8AB4F8] btn-border-table-grid`}
           >
             Recent
           </button>

@@ -35,9 +35,6 @@ const nav=useNavigate();
     // console.log("v", vouchers);
   };
 
-  const detailHandler=(v)=>{
-    nav("/voucher-detail",{state:{voucher:v}});
-  }
   return (
 
     <div className=" w-full my-10">
@@ -118,7 +115,7 @@ const nav=useNavigate();
               <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
                 TIME
               </th>
-              <th></th>
+              
             </tr>
           </thead>
           <tbody>
@@ -136,16 +133,6 @@ const nav=useNavigate();
                     {new Date().toLocaleDateString("mm")}
                   </td>
                   <td className=" px-1 py-4 text-end">{v?.time}</td>
-
-                  <td className=" pe-5 py-4 text-end">
-                    
-                    <button onClick={()=>detailHandler(v)} className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
-                      <BsArrowRight
-                        size={"1rem"}
-                        className="text-[var(--secondary-color)]"
-                      />
-                    </button>
-                  </td>
                 </tr>
               );
             })
