@@ -1,0 +1,306 @@
+import { Link } from "react-router-dom";
+import { useContextCustom } from "../../context/stateContext";
+import { BsSearch } from "react-icons/bs";
+import { useState } from "react";
+import { Button } from "@mantine/core";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { MdArrowForwardIos } from "react-icons/md";
+import { BsArrowRight } from "react-icons/bs";
+import Cookies from "js-cookie";
+import axios from "axios";
+
+const Monthly = () => {
+  const { liHandler } = useContextCustom();
+  const [sortValue, setSortValue] = useState();
+  const [month, setMonth] = useState(null);
+  const [year, setYear] = useState(null);
+  const [monthContainer, setMonthContainer] = useState([
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "Novenber",
+    "December",
+  ]);
+  const token = Cookies.get("token");
+  const [monthTag, setMonthTag] = useState(null);
+  const [mRecords, setMRecords] = useState(null);
+
+  const fetchData = async () => {
+    const { data } = await axios({
+      method: "get",
+      url: `https://h.mmsdev.site/api/v1/monthly_sale_record?month=${month}&year=${year}`,
+      headers: { authorization: `Bearer ${token}` },
+      responseType: "finance",
+    });
+    // const dd=await data.json();
+    const mdata = JSON.parse(data);
+    setMRecords(mdata.data);
+    setMonth(null);
+    setYear(null);
+    setMonthTag(mdata.data.monthly_sale_overview[0].date);
+    console.log("mdata", mdata);
+    console.log("data", data);
+    console.log("monthTag", monthTag.slice(3, monthTag.length));
+  };
+
+  return (
+    <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
+      {/* Breadcrumg start */}
+      <div className=" flex justify-between items-center mb-10">
+        <div>
+          <p className="breadcrumb-title	">Monthly</p>
+          <p className=" text-[14px] text-white opacity-70  select-none">
+            Finance / Monthly
+          </p>{" "}
+        </div>
+        <Link to={"/cashier"}>
+          <button
+            onClick={() => liHandler("cashier")}
+            className="w-[140px] h-[40px] font-semibold text-[16px] myBlueBtn"
+          >
+            Go to Shop
+          </button>
+        </Link>
+      </div>
+      {/* Breadcrumg end */}
+
+      <div className=" flex justify-between items-center py-5">
+        <p className="breadcrumb-title	">
+          {monthTag ? monthTag.slice(3, monthTag.length) : "Monthly"} Sale
+          Overview
+        </p>
+        <div className=" flex items-baseline gap-4">
+          <div className=" flex justify-start items-baseline gap-2">
+            <select
+              name="sort"
+              value={sortValue}
+              onChange={(e) => setSortValue(e.target.value)}
+              className="recent-dropdown "
+            >
+              <option value="" className="recent-dropdown hidden">
+                Export
+              </option>
+              <option value="last" className="recent-dropdown">
+                PDF
+              </option>
+              <option value="first" className="recent-dropdown">
+                Print
+              </option>
+              <option value="copy" className="recent-dropdown">
+                Copy
+              </option>
+            </select>
+          </div>
+
+          <div className=" flex justify-start items-baseline gap-2">
+            <select
+              name="sort"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="recent-dropdown "
+            >
+              <option value="" className="recent-dropdown hidden">
+                Month
+              </option>
+              {monthContainer?.map((month, index) => (
+                <option
+                  key={month}
+                  value={index + 1}
+                  className="recent-dropdown"
+                >
+                  {month.slice(0, 3)}
+                </option>
+              ))}
+            </select>
+            {/* </div>
+            <div className=" flex justify-start items-baseline gap-2"> */}
+            <select
+              name="sort"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="recent-dropdown "
+            >
+              <option value="" className="recent-dropdown hidden">
+                Year
+              </option>
+              {/* <option value={2021} className="recent-dropdown">
+                2021
+              </option>
+              <option value={2022} className="recent-dropdown">
+                2022
+              </option> */}
+              <option value={2023} className="recent-dropdown">
+                2023
+              </option>
+            </select>
+          </div>
+
+          <button
+            onClick={fetchData}
+            className="w-[40px] h-[30px] font-semibold text-[16px] myBlueBtn flex justify-center items-center"
+          >
+            <BsSearch className=" text-[var(--sidebar-color)]" />
+          </button>
+        </div>
+      </div>
+      {/* showList start */}
+      <table className="w-full text-gray-300 border border-gray-700 text-sm mb-20">
+        <thead>
+          <tr className="">
+            <th className=" py-4 border-b text-center border-gray-600 px-1 uppercase font-medium">
+              No
+            </th>
+            <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              VOUCHER
+            </th>
+            <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              CASH
+            </th>
+            <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              TAX
+            </th>
+            <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              TOTAL
+            </th>
+            <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              DATE
+            </th>
+            {/* <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
+              TIME
+            </th> */}
+            <th className=" "></th>
+          </tr>
+        </thead>
+        <tbody>
+          {mRecords?.monthly_sale_overview.length>0?
+          mRecords?.monthly_sale_overview.map((record, index) => {
+            return (
+              <tr key={record?.id} className=" ">
+                <td className="px-1 text-center  py-4">{index + 1}</td>
+                <td className="px-1 text-end py-4">{record?.vouchers}</td>
+                <td className="px-1 text-end py-4">{record?.cash}</td>
+                <td className="px-1 py-4 text-end">{record?.tax}</td>
+                <td className="px-1 py-4 text-end">{record?.total}</td>
+                <td className="px-1 py-4 text-end">{record?.date}</td>
+                {/* <td className=" px-1 py-4 text-end">{record?.}</td> */}
+                <td className=" pe-5 py-4 text-end">
+                  <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
+                    <BsArrowRight
+                      size={"1rem"}
+                      className="text-[var(--secondary-color)]"
+                    />
+                  </span>
+                </td>
+              </tr>
+            );
+          }) :
+          <tr><td className="px-1 text-center py-4 " colSpan={6} >There is no data now.</td></tr> 
+          }
+        </tbody>
+      </table>
+      {/* showList end */}
+
+      <div className="w-full flex justify-between items-end h-[60px] gap-5">
+        {/* total calculate start*/}
+        <div className=" flex justify-start items-center basis-2/3">
+          <div
+            className={`text-[var(--secondary-color)] btn-border-table-grid px-5 py-3 flex flex-col justify-end basis-1/4`}
+          >
+            <p className=" text-[var(--font-color)] text-end text-[14px] font-medium">
+              Total Days
+            </p>
+            <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
+              {mRecords?.total_days}
+            </p>
+          </div>
+          <div
+            className={`text-[var(--secondary-color)] btn-border-table-grid px-5 py-3 flex flex-col justify-end basis-1/4`}
+          >
+            <p className=" text-[var(--font-color)] text-end text-[14px] font-medium">
+              Total Vouchers
+            </p>
+            <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
+              {mRecords?.total_vouchers}
+            </p>
+          </div>
+
+          <div
+            className={`text-[var(--secondary-color)] btn-border-table-grid px-5 py-3 flex flex-col justify-end basis-1/4`}
+          >
+            <p className=" text-[var(--font-color)] text-end text-[14px] font-medium">
+              Total Cash
+            </p>
+            <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
+              {mRecords?.total_cash}
+            </p>
+          </div>
+          <div
+            className={`text-[var(--secondary-color)] btn-border-table-grid px-5 py-3 flex flex-col justify-end basis-1/4`}
+          >
+            <p className=" text-[var(--font-color)] text-end text-[14px] font-medium">
+              Total Tax
+            </p>
+            <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
+              {mRecords?.total_tax}
+            </p>
+          </div>
+          <div
+            className={`text-[var(--secondary-color)] btn-border-table-grid px-5 py-3 flex flex-col justify-end basis-1/4`}
+          >
+            <p className=" text-[var(--font-color)] text-end text-[14px] font-medium">
+              Total
+            </p>
+            <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
+              {mRecords?.total}
+            </p>
+          </div>
+        </div>
+        {/* total calculate end*/}
+
+        {/* pagination start */}
+        <Button.Group className=" border-[--border-color] flex justify-end basis-1/3">
+          <Button
+            variant="default"
+            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+          >
+            <MdArrowBackIosNew />
+          </Button>
+          <Button
+            variant="default"
+            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+          >
+            1
+          </Button>
+          <Button
+            variant="default"
+            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+          >
+            2
+          </Button>
+          <Button
+            variant="default"
+            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+          >
+            3
+          </Button>
+          <Button
+            variant="default"
+            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+          >
+            <MdArrowForwardIos />
+          </Button>
+        </Button.Group>
+        {/* pagination end */}
+      </div>
+    </div>
+  );
+};
+
+export default Monthly;
