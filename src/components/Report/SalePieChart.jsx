@@ -8,21 +8,20 @@ const SalePieChart = ({ bdata }) => {
   SalePieChart.propTypes = {
     bdata: PropTypes.object,
   };
-  const [colors,setColors]=useState(["#8AB4F8", "#6a88b8", "#404d64", "#e8eaed", "#8f2e44"])
+  const [colors,setColors]=useState(["#8AB4F8", "#6a88b8", "#404d64", "#e8eaed", "#8f2e44","#007700"])
   const data = bdata?.brandsInfo;
  // console.log("bdata", bdata?.brandsInfo);
 
   return (
     <div>
       <div className="flex justify-center items-center ">
-        <PieChart width={300} height={320} className="">
+        <PieChart width={300} height={220} className="">
           <Pie
             data={data}
             cx={120}
-            cy={200}
+            cy={100}
             innerRadius={60}
             outerRadius={80}
-            fill="#8ab4f8"
             paddingAngle={5}
             dataKey="brand_sales"
             className=" mx-auto inline-block"
@@ -40,9 +39,9 @@ const SalePieChart = ({ bdata }) => {
       <div className=" w-full flex justify-center items-center gap-2 mb-3">
         {data?.map((bdata, index) => {
           return (
-            <span key={index}>
+            <span key={bdata?.id}>
               <span
-                className={`inline-block mr-2 w-3 h-3 rounded-full bg-[${COLORS[index % COLORS.length]}] `}
+                className={`inline-block mr-2 w-3 h-3 rounded-full z-20 bg-[${colors[index]}] `}
               >
               </span>
               <span className=" text-[var(--gray-color)]">{bdata?.name}</span>

@@ -38,14 +38,15 @@ const SaleTinyBarChart = ({ wdata }) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="dayName" />
+        <XAxis dataKey="dayName"/>
         <YAxis dataKey="total" />
         <Tooltip />
         <Legend />
-        <Bar dataKey="total" fill="#8884d8" />
+        <Bar dataKey="total" fill="#8AB4F8" />
       </BarChart>
     </ResponsiveContainer>
   );
 };
 
 export default SaleTinyBarChart;
+        //dayName

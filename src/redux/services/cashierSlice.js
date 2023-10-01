@@ -105,7 +105,7 @@ export const cartSlice = createSlice({
     },
     subtractItemsQuantity: (state, { payload }) => {
       state.strQty = new String(payload.quantity);
-      console.log("strQty", state.strQty);
+      //console.log("strQty", state.strQty);
       if (state.strQty.length === 1) {
         state.substractQty = "1";
       } else {
@@ -122,8 +122,8 @@ export const cartSlice = createSlice({
           return item;
         }
       });
-      console.log("ccc", state.cartItems);
-      console.log("current", state.currentItem);
+      // console.log("ccc", state.cartItems);
+      // console.log("current", state.currentItem);
 
       state.totalCost +=
         calcTotalCost(state.cartItems) -

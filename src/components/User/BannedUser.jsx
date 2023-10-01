@@ -33,15 +33,7 @@ const BannedUser = () => {
             User / Banned User Overview
           </p>
         </div>
-        <Link to={"/create-user"}>
-          <button
-            onClick={() => liHandler("user create")}
-            className="w-[170px] h-[40px] font-semibold text-[16px] myBlueBtn flex justify-center items-center gap-2"
-          >
-            <BsPlusLg size={"1.3rem"} />
-            Create user
-          </button>
-        </Link>
+        
       </div>
       {/* <Breadcrumb breadcrumbItems={breadcrumbItems} /> */}
       <p className="breadcrumb-title mb-5">Banned User Overview</p>
