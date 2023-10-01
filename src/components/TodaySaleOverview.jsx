@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const TodaySaleOverview = () => {
     const token = Cookies.get("token");
-  const { showModal, setShowModal } = useContextCustom();
+  const { showModal, setShowModal,sidebarActived } = useContextCustom();
   const [sortValue, setSortValue] = useState();
   const [vouchers, setVouchers] = useState();
 const nav=useNavigate();
@@ -31,8 +31,8 @@ const nav=useNavigate();
     });
     const voucher = await JSON.parse(data?.data);
     setVouchers(voucher?.data);
-    console.log("data", data);
-    console.log("v", vouchers);
+    // console.log("data", data);
+    // console.log("v", vouchers);
   };
 
   const detailHandler=(v)=>{
@@ -67,7 +67,7 @@ const nav=useNavigate();
 
             <button
               onClick={() => setShowModal(true)}
-              className=" text-[var(--secondary-color)] flex justify-center items-center border-[var(--border-color)] rounded border px-2 py-1"
+              className={`${sidebarActived==='recent'?'flex':'hidden' } text-[var(--secondary-color)] justify-center items-center border-[var(--border-color)] rounded border px-2 py-1`}
             >
               <BsCalculator className="text-[var(--font-color)] me-2" /> sale
               close

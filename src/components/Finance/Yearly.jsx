@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContextCustom } from "../../context/stateContext";
 import { BsSearch } from "react-icons/bs";
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "@mantine/core";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -28,7 +28,7 @@ const Yearly = () => {
     setYRecords(ydata);
     setYear(null);
     setYearTag(ydata.yearly_sale_overviews[0].year);
-    console.log("dd", ydata);
+    // console.log("dd", ydata);
   };
 
   return (
@@ -138,30 +138,37 @@ const Yearly = () => {
         </thead>
 
         <tbody>
-          {yRecords?.yearly_sale_overviews.length>0?
-          yRecords?.yearly_sale_overviews?.map((record, index) => {
-            return (
-              <tr key={record?.id} className=" ">
-                <td className="px-1 text-center  py-4">{index + 1}</td>
-                <td className="px-1 text-end py-4">{record?.total_vouchers}</td>
-                <td className="px-1 text-end py-4">{record?.total_cash}</td>
-                <td className="px-1 py-4 text-end">{record?.total_tax}</td>
-                <td className="px-1 py-4 text-end">{record?.total}</td>
-                <td className="px-1 py-4 text-end">{record?.month}</td>
-                <td className=" px-1 py-4 text-end">{record?.year}</td>
-                <td className=" pe-5 py-4 text-end">
-                  <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
-                    <BsArrowRight
-                      size={"1rem"}
-                      className="text-[var(--secondary-color)]"
-                    />
-                  </span>
-                </td>
-              </tr>
-            );
-          }):
-          <tr><td className="px-1 text-center py-4 " colSpan={8} >There is no data now.</td></tr> 
-          }
+          {yRecords?.yearly_sale_overviews.length > 0 ? (
+            yRecords?.yearly_sale_overviews?.map((record, index) => {
+              return (
+                <tr key={record?.id} className=" ">
+                  <td className="px-1 text-center  py-4">{index + 1}</td>
+                  <td className="px-1 text-end py-4">
+                    {record?.total_vouchers}
+                  </td>
+                  <td className="px-1 text-end py-4">{record?.total_cash}</td>
+                  <td className="px-1 py-4 text-end">{record?.total_tax}</td>
+                  <td className="px-1 py-4 text-end">{record?.total}</td>
+                  <td className="px-1 py-4 text-end">{record?.month}</td>
+                  <td className=" px-1 py-4 text-end">{record?.year}</td>
+                  <td className=" pe-5 py-4 text-end">
+                    <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
+                      <BsArrowRight
+                        size={"1rem"}
+                        className="text-[var(--secondary-color)]"
+                      />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td className="px-1 text-center py-4 " colSpan={8}>
+                There is no data now.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       {/* showList end */}

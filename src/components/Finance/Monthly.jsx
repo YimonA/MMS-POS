@@ -45,9 +45,9 @@ const Monthly = () => {
     setMonth(null);
     setYear(null);
     setMonthTag(mdata.data.monthly_sale_overview[0].date);
-    console.log("mdata", mdata);
-    console.log("data", data);
-    console.log("monthTag", monthTag.slice(3, monthTag.length));
+    // console.log("mdata", mdata);
+    // console.log("data", data);
+    // console.log("monthTag", monthTag.slice(3, monthTag.length));
   };
 
   return (
@@ -179,30 +179,35 @@ const Monthly = () => {
           </tr>
         </thead>
         <tbody>
-          {mRecords?.monthly_sale_overview.length>0?
-          mRecords?.monthly_sale_overview.map((record, index) => {
-            return (
-              <tr key={record?.id} className=" ">
-                <td className="px-1 text-center  py-4">{index + 1}</td>
-                <td className="px-1 text-end py-4">{record?.vouchers}</td>
-                <td className="px-1 text-end py-4">{record?.cash}</td>
-                <td className="px-1 py-4 text-end">{record?.tax}</td>
-                <td className="px-1 py-4 text-end">{record?.total}</td>
-                <td className="px-1 py-4 text-end">{record?.date}</td>
-                {/* <td className=" px-1 py-4 text-end">{record?.}</td> */}
-                <td className=" pe-5 py-4 text-end">
-                  <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
-                    <BsArrowRight
-                      size={"1rem"}
-                      className="text-[var(--secondary-color)]"
-                    />
-                  </span>
-                </td>
-              </tr>
-            );
-          }) :
-          <tr><td className="px-1 text-center py-4 " colSpan={6} >There is no data now.</td></tr> 
-          }
+          {mRecords?.monthly_sale_overview.length > 0 ? (
+            mRecords?.monthly_sale_overview.map((record, index) => {
+              return (
+                <tr key={record?.id} className=" ">
+                  <td className="px-1 text-center  py-4">{index + 1}</td>
+                  <td className="px-1 text-end py-4">{record?.vouchers}</td>
+                  <td className="px-1 text-end py-4">{record?.cash}</td>
+                  <td className="px-1 py-4 text-end">{record?.tax}</td>
+                  <td className="px-1 py-4 text-end">{record?.total}</td>
+                  <td className="px-1 py-4 text-end">{record?.date}</td>
+                  {/* <td className=" px-1 py-4 text-end">{record?.}</td> */}
+                  <td className=" pe-5 py-4 text-end">
+                    <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
+                      <BsArrowRight
+                        size={"1rem"}
+                        className="text-[var(--secondary-color)]"
+                      />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td className="px-1 text-center py-4 " colSpan={6}>
+                There is no data now.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       {/* showList end */}

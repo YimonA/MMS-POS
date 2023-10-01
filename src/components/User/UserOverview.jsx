@@ -29,7 +29,7 @@ const UserOverview = () => {
 
   useEffect(() => {
     dispatch(addUsers({ users: data }));
-    console.log("data", data);
+    //console.log("data", data);
     // console.log("users", users);
   }, [data]);
 
@@ -47,7 +47,7 @@ const UserOverview = () => {
       if (result.isConfirmed) {
         Swal.fire("Banned!", "The user has been banned.", "success");
         const { data } = await bannedUsers({ id, token });
-        console.log("bannedUsers", data);
+        //console.log("bannedUsers", data);
         nav("/banned-user");
       }
     });
@@ -62,7 +62,6 @@ const UserOverview = () => {
             User / User Overview
           </p>
         </div>
-        
       </div>
       {/* <Breadcrumb breadcrumbItems={breadcrumbItems} /> */}
       <p className="breadcrumb-title mb-5">Staff Overview</p>
@@ -150,7 +149,7 @@ const UserOverview = () => {
                 <td className="px-1 py-4 text-end">
                   <div className=" pe-20 flex justify-end items-center gap-2 z-20">
                     <button
-                      onClick={(e) => bannedHandler(e,user?.id)}
+                      onClick={(e) => bannedHandler(e, user?.id)}
                       className="inline-block bg-gray-700 w-8 h-8 p-1 rounded-full cursor-pointer"
                     >
                       <BiMinus

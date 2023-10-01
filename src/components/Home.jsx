@@ -26,8 +26,8 @@ const Home = () => {
   const { data } = useGetPhotoQuery(token);
   const oData = useSelector((state) => state?.overviewSlice.oData);
 
-  console.log("photos", data);
-  console.log("overviewData", overviewData);
+  // console.log("photos", data);
+  // console.log("overviewData", overviewData);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(addOverview({ oData: overviewData }));
-    console.log("oData", oData);
+    //console.log("oData", oData);
   }, [overviewData]);
 
   return (
@@ -95,24 +95,24 @@ const Home = () => {
             Quick Actions
           </p>
           <div className=" flex items-stretch justify-between gap-10">
-              <div
-                onClick={() => liHandler("add product")}
-                className="basis-2/5 border-[1px] border-[var(--border-color)] flex items-center gap-5 p-5 rounded-[3px]"
-              >
-                <AiOutlinePlus
-                  className=" w-12 h-12 p-2 border-[1px] border-[var(--border-color)] flex justify-center items-center text-[var(--font-color)] rounded-[5px]"
-                  size={"0.8rem"}
-                />
-                <div>
-                  <p className="font-semibold text-[14px] text-[var(--secondary-color)]">
-                    Add Product
-                  </p>
-                  <p className="font-normal text-[12px] text-[var(--gray-color)]">
-                    stock update
-                  </p>
-                </div>
+            <div
+              onClick={() => liHandler("add product")}
+              className="basis-2/5 border-[1px] border-[var(--border-color)] flex items-center gap-5 p-5 rounded-[3px]"
+            >
+              <AiOutlinePlus
+                className=" w-12 h-12 p-2 border-[1px] border-[var(--border-color)] flex justify-center items-center text-[var(--font-color)] rounded-[5px]"
+                size={"0.8rem"}
+              />
+              <div>
+                <p className="font-semibold text-[14px] text-[var(--secondary-color)]">
+                  Add Product
+                </p>
+                <p className="font-normal text-[12px] text-[var(--gray-color)]">
+                  stock update
+                </p>
               </div>
-                          <Link to={"/cashier"}>
+            </div>
+            <Link to={"/cashier"}>
               <div className="basis-3/5 border-[1px] border-[var(--border-color)] flex items-center gap-5 p-5 rounded-[3px]">
                 <BsShop
                   className=" w-12 h-12 p-2 border-[1px] border-[var(--border-color)] flex justify-center items-center text-[var(--font-color)] rounded-[5px]"

@@ -1,5 +1,5 @@
 import { useContextCustom } from "../context/stateContext";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { FiFolderPlus } from "react-icons/fi";
 
 const ModalSaleClose = () => {

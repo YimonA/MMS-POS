@@ -14,15 +14,15 @@ import { useEffect } from "react";
 const UserAccount = () => {
   const { liHandler } = useContextCustom();
   const dispatch = useDispatch();
-  const {id}=useParams();
+  const { id } = useParams();
   const token = Cookies.get("token");
-  const {data}=useGetSingleUsersQuery({id,token});
+  const { data } = useGetSingleUsersQuery({ id, token });
   const singleUser = useSelector((state) => state.userSlice.singleUser);
 
   useEffect(() => {
     dispatch(addSingleUser({ singleUser: data }));
-    console.log("data", data);
-    console.log("singleUser", singleUser);
+    // console.log("data", data);
+    // console.log("singleUser", singleUser);
   }, [data]);
 
   return (
@@ -105,9 +105,7 @@ const UserAccount = () => {
               <p className=" font-medium text-[18px] text-[#B9B9B9]">Gender</p>
               <p className=" font-medium text-[18px] text-[#B9B9B9]">Phone</p>
               <p className=" font-medium text-[18px] text-[#B9B9B9]">Mail</p>
-              <p className=" font-medium text-[18px] text-[#B9B9B9]">
-                Address
-              </p>
+              <p className=" font-medium text-[18px] text-[#B9B9B9]">Address</p>
             </div>
             <div className="w-fit flex flex-col gap-5 basis-1/2 ps-10">
               <p className=" font-medium text-[18px] text-white">
