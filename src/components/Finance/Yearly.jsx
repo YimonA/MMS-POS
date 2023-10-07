@@ -5,30 +5,50 @@ import { useState } from "react";
 import { Button } from "@mantine/core";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
-import { BsArrowRight } from "react-icons/bs";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Yearly = () => {
   const token = Cookies.get("token");
   const { liHandler } = useContextCustom();
   const [sortValue, setSortValue] = useState();
   const [year, setYear] = useState(null);
+  const [allYear, setAllYear] = useState();
+  // const [year, setYear] = useState(new Date().getFullYear());
   const [yRecords, setYRecords] = useState();
   const [yearTag, setYearTag] = useState(null);
+
+  useEffect(() => {
+    fetchYearData();
+  }, []);
 
   const fetchData = async () => {
     const { data } = await axios({
       method: "get",
       url: `https://h.mmsdev.site/api/v1/yearly_sale_record?year=${year}`,
       headers: { authorization: `Bearer ${token}` },
-      responseType: "finance",
+      responseType: "financeData",
     });
     const ydata = JSON.parse(data);
     setYRecords(ydata);
     setYear(null);
     setYearTag(ydata.yearly_sale_overviews[0].year);
     // console.log("dd", ydata);
+  };
+
+  const fetchYearData = async () => {
+    const { data } = await axios({
+      method: "get",
+      url: `https://h.mmsdev.site/api/v1/year`,
+      headers: { authorization: `Bearer ${token}` },
+      responseType: "getYear",
+    });
+    const ydata = JSON.parse(data);
+    // setYRecords(ydata);
+    setAllYear(ydata);
+    // setYearTag(ydata.yearly_sale_overviews[0].year);
+    console.log("year", allYear);
   };
 
   return (
@@ -85,18 +105,17 @@ const Yearly = () => {
               onChange={(e) => setYear(e.target.value)}
               className="recent-dropdown "
             >
-              <option value="" className="recent-dropdown hidden">
+              <option value="null" className="recent-dropdown hidden">
                 Year
               </option>
-              {/* <option value={2021} className="recent-dropdown">
-                2021
-              </option>
-              <option value={2022} className="recent-dropdown">
-                2022
-              </option> */}
-              <option value={2023} className="recent-dropdown">
-                2023
-              </option>
+
+              {allYear?.map((y) => {
+                return (
+                  <option key={y} value={y} className="recent-dropdown">
+                    {y}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
@@ -133,7 +152,6 @@ const Yearly = () => {
             <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
               Year
             </th>
-            <th className=" "></th>
           </tr>
         </thead>
 
@@ -151,14 +169,6 @@ const Yearly = () => {
                   <td className="px-1 py-4 text-end">{record?.total}</td>
                   <td className="px-1 py-4 text-end">{record?.month}</td>
                   <td className=" px-1 py-4 text-end">{record?.year}</td>
-                  <td className=" pe-5 py-4 text-end">
-                    <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
-                      <BsArrowRight
-                        size={"1rem"}
-                        className="text-[var(--secondary-color)]"
-                      />
-                    </span>
-                  </td>
                 </tr>
               );
             })

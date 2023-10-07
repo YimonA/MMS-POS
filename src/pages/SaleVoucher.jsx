@@ -7,7 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { clearCart } from "../redux/services/cashierSlice";
 
 const SaleVoucher = () => {
-  const [voucher, setVoucher] = useState();
+  const [voucher, setVoucher,setSidebarActived] = useState();
   const location = useLocation();
   const voucherList = location.state?.voucher;
   const nav=useNavigate();
@@ -71,8 +71,8 @@ const SaleVoucher = () => {
       </div>
       {/* btn */}
       <div className=" h-[40px] flex justify-center gap-3">
-        <Link to={"/recent"}>
-          <button
+        <Link to={"/recent"} onClick={()=>setSidebarActived("recent")}>
+          <button 
             className={`h-[40px] text-[var(--secondary-color)] px-3 hover:text-[#8AB4F8] active:text-[#8AB4F8] btn-border-table-grid`}
           >
             Recent

@@ -33,7 +33,7 @@ export const StateContextProvider = ({ children }) => {
   };
   // for sidebar
 
-  const [sidebarActived,setSidebarActived]=useState();
+  const [sidebarActived,setSidebarActived]=useState('overview');
   const liHandler = (liname) => {
     setSidebarActived(liname);
   };

@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@mantine/core";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
-import { BsArrowRight } from "react-icons/bs";
 import { DateInput } from "@mantine/dates";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -149,7 +148,6 @@ const Custom = () => {
             <th className=" py-4 border-b text-end border-gray-600 px-1 uppercase font-medium">
               TIME
             </th>
-            <th className=" "></th>
           </tr>
         </thead>
         <tbody>
@@ -164,14 +162,7 @@ const Custom = () => {
                   <td className="px-1 py-4 text-end">{record?.total}</td>
                   <td className="px-1 py-4 text-end"></td>
                   <td className=" px-1 py-4 text-end">{record?.time}</td>
-                  <td className=" pe-5 py-4 text-end">
-                    <span className="inline-block bg-gray-700 w-8 h-8 p-2 rounded-full cursor-pointer">
-                      <BsArrowRight
-                        size={"1rem"}
-                        className="text-[var(--secondary-color)]"
-                      />
-                    </span>
-                  </td>
+              
                 </tr>
               );
             })

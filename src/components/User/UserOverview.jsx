@@ -48,6 +48,7 @@ const UserOverview = () => {
         Swal.fire("Banned!", "The user has been banned.", "success");
         const { data } = await bannedUsers({ id, token });
         //console.log("bannedUsers", data);
+        liHandler("user banned")
         nav("/banned-user");
       }
     });
