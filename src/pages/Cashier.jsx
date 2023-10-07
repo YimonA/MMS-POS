@@ -76,6 +76,7 @@ const Cashier = () => {
   }
 
   const paymentHandler = async () => {
+    if(cartItems.length>0){
     try {
       const strData = payment();
       const stringData = await voucher({token,strData});
@@ -87,6 +88,7 @@ const Cashier = () => {
     } catch (error) {
       console.log(error);
     }
+  }
   };
 
   return (
