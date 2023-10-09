@@ -28,7 +28,7 @@ import {
 } from "../../redux/services/reportSaleSlice";
 
 const SaleReport = () => {
-  const [show, setShow] = useState("weekely");
+  const [show, setShow] = useState("monthly");
   const [vouchers, setVouchers] = useState();
   const { liHandler } = useContextCustom();
   const token = Cookies.get("token");
@@ -53,22 +53,18 @@ const SaleReport = () => {
   // console.log("bdata", brandData);
 
   // console.log("pdata", pdata?.productInfo);
-  // console.log("wdata", wdata);
-  // console.log("mdata", mdata);
-  // console.log("ydata", ydata);
+  // console.log("wddata", mdata);
+  // console.log("ydata", wdata);
+  // console.log("mata", ydata);
+  // console.log("tdata", tdata);
+  // console.log("bdata", bdata);
   // console.log("monthlyData", monthlyData);
   // console.log("yearlyData", yearlyData);
 
   useEffect(() => {
     fetchData();
-    //console.log("v", vouchers);
   }, []);
-  // useEffect(() => {
-  //   console.log("YearlyData", yearlyData);
-  // }, [yearlyData]);
-  // useEffect(() => {
-  //   console.log("MonthlyData", monthlyData);
-  // }, [monthlyData]);
+  
 
   const fetchData = async () => {
     const data = await axios({
@@ -99,7 +95,14 @@ const SaleReport = () => {
   }, [mdata]);
   useEffect(() => {
     dispatch(addYearlySaleReport({ ydata }));
+    console.log("pdata", pdata?.productInfo);
+  console.log("wddata", mdata);
+  console.log("ydata", wdata);
+  console.log("mata", ydata);
+  console.log("tdata", tdata);
+  console.log("bdata", bdata);
   }, [ydata]);
+
   return (
     <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
       {/* Breadcrumg start */}
@@ -201,7 +204,7 @@ const SaleReport = () => {
           </Link>
         </div>
         {/* weekely sale */}
-        {show === "weekely" ? (
+        {/* {show === "weekely" ? (
           <div className="basis-2/3 border-[1px] border-[var(--border-color)] p-5 rounded-[3px]">
             <p className=" text-[20px] font-medium text-[var(--secondary-color)] mb-3">
               Weekly Sales
@@ -312,7 +315,7 @@ const SaleReport = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
 
         {/* monthly sale */}
         {show === "monthly" ? (
@@ -446,9 +449,6 @@ const SaleReport = () => {
                         {yearlyData?.yearly_highest_sale[0]?.highest_percentage}
                       </span>
                     </p>
-                    {/* <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {yearlyData?.yearly_highest_sale[0]?.highest_sale_date}
-                    </p> */}
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
@@ -493,13 +493,9 @@ const SaleReport = () => {
                         size={"1.3rem"}
                       />
                       <span className=" text-red-500">
-                        {" "}
                         {yearlyData?.yearly_lowest_sale[0]?.lowest_percentage}
                       </span>
                     </p>
-                    {/* <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {yearlyData?.yearly_lowest_sale[0]?.lowest_sale_date}
-                    </p> */}
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
