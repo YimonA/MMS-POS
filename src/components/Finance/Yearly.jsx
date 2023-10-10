@@ -23,18 +23,16 @@ const Yearly = () => {
     fetchYearData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (year) => {
     const { data } = await axios({
       method: "get",
-      url: `https://h.mmsdev.site/api/v1/yearly_sale_record?year=${year}`,
+      url: `https://h.mmsdev.site/api/v1/yearly_sale_record?year=${year}&page=1`,
       headers: { authorization: `Bearer ${token}` },
       responseType: "financeData",
     });
     const ydata = JSON.parse(data);
     setYRecords(ydata);
-    setYear(null);
     setYearTag(ydata.yearly_sale_overviews[0].year);
-    // console.log("dd", ydata);
   };
 
   const fetchYearData = async () => {
@@ -45,11 +43,32 @@ const Yearly = () => {
       responseType: "getYear",
     });
     const ydata = JSON.parse(data);
-    // setYRecords(ydata);
     setAllYear(ydata);
-    // setYearTag(ydata.yearly_sale_overviews[0].year);
-    console.log("year", allYear);
   };
+
+  const pageChange = async(link) => {
+    const { data } = await axios({
+      method: "get",
+      url: link,
+      headers: { authorization: `Bearer ${token}` },
+      responseType: "finance",
+    });
+    // const dd=await data.json();
+    const ydata = JSON.parse(data);
+    setYRecords(ydata);
+    setYearTag(ydata.yearly_sale_overviews[0].year);
+  };
+
+  const next=()=>{
+    if(yRecords?.next_page_url){
+      pageChange(yRecords?.next_page_url)
+    }
+  }
+  const prev=()=>{
+    if(yRecords?.prev_page_url){
+      pageChange(yRecords?.prev_page_url)
+    }
+  }
 
   return (
     <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
@@ -120,7 +139,7 @@ const Yearly = () => {
           </div>
 
           <button
-            onClick={fetchData}
+            onClick={()=>fetchData(year)}
             className="w-[40px] h-[30px] font-semibold text-[16px] myBlueBtn flex justify-center items-center"
           >
             <BsSearch className=" text-[var(--sidebar-color)]" />
@@ -156,8 +175,8 @@ const Yearly = () => {
         </thead>
 
         <tbody>
-          {yRecords?.yearly_sale_overviews.length > 0 ? (
-            yRecords?.yearly_sale_overviews?.map((record, index) => {
+          {yRecords?.yearly_sale_overviews?.data.length > 0 ? (
+            yRecords?.yearly_sale_overviews?.data?.map((record, index) => {
               return (
                 <tr key={record?.id} className=" ">
                   <td className="px-1 text-center  py-4">{index + 1}</td>
@@ -240,40 +259,36 @@ const Yearly = () => {
         </div>
         {/* total calculate end*/}
 
-        {/* pagination start */}
-        <Button.Group className=" border-[--border-color] flex justify-end basis-1/3">
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowBackIosNew />
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            1
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            2
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            3
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowForwardIos />
-          </Button>
-        </Button.Group>
-        {/* pagination end */}
+        {/* pagination start*/}
+        <div>
+          <Button.Group className=" pt-10 flex justify-end">
+            <Button
+              onClick={prev}
+              variant="default"
+              className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              <MdArrowBackIosNew />
+            </Button>
+            <Button
+              variant="default"
+              className={`text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              page {yRecords?.yearly_sale_overviews?.current_page} / {yRecords?.yearly_sale_overviews?.last_page}
+            </Button>
+
+            <Button
+              onClick={next
+            }
+              variant="default"
+              className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              <MdArrowForwardIos />
+            </Button>
+          </Button.Group>
+        </div>
+        {/* pagination end*/}
       </div>
     </div>
   );

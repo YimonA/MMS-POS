@@ -1,4 +1,3 @@
-// import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextCustom } from "../../context/stateContext";
 import { BsSearch } from "react-icons/bs";
@@ -19,6 +18,7 @@ const Custom = () => {
   const [endDateTag, setEndDateTag] = useState(null);
   const [endDate, setEndDate] = useState();
   const [cRecords, setCRecords] = useState();
+  const [cPage, setCPage] = useState();
 
   useEffect(() => {
     const a = startDate?.toISOString().slice(0, 10);
@@ -31,17 +31,41 @@ const Custom = () => {
   const fetchData = async () => {
     const data = await axios({
       method: "get",
-      url: `https://h.mmsdev.site/api/v1/custom_sale_records?start_date=${startDateTag}&end_date=${endDateTag}`,
+      url: `https://h.mmsdev.site/api/v1/custom_sale_records?start_date=${startDateTag}&end_date=${endDateTag}&page=1`,
       headers: { authorization: `Bearer ${token}` },
       responseType: "finance",
     });
-    const cData = await JSON.parse(data?.data);
-    setCRecords(cData?.data);
-    setStartDate(null);
-    setEndDate(null);
-    // console.log("data", cData);
+    const cdata = await JSON.parse(data?.data);
+    setCRecords(cdata?.data);
+    setCPage(cdata);
+    // setStartDate(null);
+    // setEndDate(null);
+    // console.log("data", cdata);
     // console.log("dd", cRecords);
   };
+
+  const pageChange = async(link) => {
+    const { data } = await axios({
+      method: "get",
+      url: `${link}`,
+      headers: { authorization: `Bearer ${token}` },
+      responseType: "finance",
+    });
+    const cdata = await JSON.parse(data);
+    setCRecords(cdata?.data);
+    setCPage(cdata);
+  };
+
+  const next=()=>{
+    if(cPage?.links?.next){
+      pageChange(cPage?.links?.next)
+    }
+  }
+  const prev=()=>{
+    if(cPage?.links?.prev){
+      pageChange(cPage?.links?.prev)
+    }
+  }
 
   return (
     <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
@@ -224,40 +248,36 @@ const Custom = () => {
         </div> */}
         {/* total calculate end*/}
 
-        {/* pagination start */}
-        <Button.Group className="ms-auto border-[--border-color] flex justify-end basis-1/3">
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowBackIosNew />
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            1
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            2
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            3
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowForwardIos />
-          </Button>
-        </Button.Group>
-        {/* pagination end */}
+        {/* pagination start*/}
+        <div>
+          <Button.Group className=" pt-10 flex justify-end">
+            <Button
+              onClick={prev}
+              variant="default"
+              className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              <MdArrowBackIosNew />
+            </Button>
+            <Button
+              variant="default"
+              className={`text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              page {cPage?.meta?.current_page} / {cPage?.meta?.last_page}
+            </Button>
+
+            <Button
+              onClick={next
+            }
+              variant="default"
+              className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
+            >
+              <MdArrowForwardIos />
+            </Button>
+          </Button.Group>
+        </div>
+        {/* pagination end*/}
       </div>
     </div>
   );

@@ -23,6 +23,9 @@ import reportSaleSlice from "./services/reportSaleSlice";
 import { reportStockApi } from "./api/reportStockApi";
 import reportStockSlice from "./services/reportStockSlice";
 
+import { financeApi } from "./api/financeApi";
+import financeSlice from "./services/financeSlice";
+
 import { profileApi } from "./api/profileApi";
 import profileSlice from "./services/profileSlice";
 import { cashierApi } from "./api/cashierApi";
@@ -41,6 +44,7 @@ export const store = configureStore({
     [overviewApi.reducerPath]: overviewApi.reducer,
     [reportStockApi.reducerPath]: reportStockApi.reducer,
     [cashierApi.reducerPath]: cashierApi.reducer,
+    [financeApi.reducerPath]: financeApi.reducer,
 
     authSlice: authSlice,
     mediaSlice: mediaSlice,
@@ -54,7 +58,7 @@ export const store = configureStore({
     reportSaleSlice: reportSaleSlice,
     reportStockSlice: reportStockSlice,
     cashierSlice: cashierSlice,
-    
+    financeSlice:financeSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -70,6 +74,7 @@ export const store = configureStore({
       overviewApi.middleware,
       reportSaleApi.middleware,
       reportStockApi.middleware,
-      cashierApi.middleware
+      cashierApi.middleware,
+      financeApi.middleware
     ),
 });

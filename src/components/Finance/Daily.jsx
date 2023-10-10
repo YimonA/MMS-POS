@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 
 const Daily = () => {
+  const [page, setPage] = useState(1);
   const { liHandler } = useContextCustom();
   const token = Cookies.get("token");
   const [dRecords, setDRecords] = useState(null);
@@ -25,7 +26,7 @@ const Daily = () => {
   const fetchData = async () => {
     const data = await axios({
       method: "get",
-      url: `https://h.mmsdev.site/api/v1/daily_sale_records?date=${dateTag}`,
+      url: `https://h.mmsdev.site/api/v1/daily_sale_records?date=${dateTag}&page=${page}`,
       headers: { authorization: `Bearer ${token}` },
       responseType: "finance-daily",
     });
@@ -33,7 +34,7 @@ const Daily = () => {
     setDRecords(dData);
     setDate(null);
     // console.log("data", data);
-    // console.log("dd", dData);
+    console.log("dd", dData);
   };
 
   return (
@@ -147,7 +148,6 @@ const Daily = () => {
               <td className="px-1 py-4 text-end">{dRecords?.total}</td>
               <td className="px-1 py-4 text-end">{dateTag}</td>
               <td className=" px-1 py-4 text-end">{dRecords?.time}</td>
-              
             </tr>
           )}
         </tbody>
@@ -201,40 +201,37 @@ const Daily = () => {
         </div>
         {/* total calculate end*/}
 
-        {/* pagination start */}
-        <Button.Group className=" border-[--border-color] flex justify-end basis-1/3">
+        {/* pagination start*/}
+      <div>
+        <Button.Group className=" pt-10 flex justify-end">
           <Button
+            onClick={() => setPage(page>1?page - 1:page)}
             variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+            className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
           >
             <MdArrowBackIosNew />
           </Button>
           <Button
             variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+            className={`text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
           >
-            1
+             page {dRecords?.daily_sale_records?.current_page} / {dRecords?.daily_sale_records?.last_page}
           </Button>
+
           <Button
+            onClick={() =>
+              setPage(page < dRecords?.daily_sale_records?.last_page? page + 1 : page)
+            }
             variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            2
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            3
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
+            className={`
+                 text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent`}
           >
             <MdArrowForwardIos />
           </Button>
         </Button.Group>
-        {/* pagination end */}
+      </div>
+      {/* pagination end*/}
       </div>
     </div>
   );

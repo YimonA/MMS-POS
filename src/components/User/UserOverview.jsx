@@ -7,7 +7,6 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextCustom } from "../../context/stateContext";
-import { BsPlusLg } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import {
@@ -29,7 +28,6 @@ const UserOverview = () => {
 
   useEffect(() => {
     dispatch(addUsers(data?.users));
-    console.log("users", users);
   }, [data]);
 
   const bannedHandler = async (e, id) => {
