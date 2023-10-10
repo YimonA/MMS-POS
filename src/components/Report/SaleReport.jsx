@@ -48,7 +48,8 @@ const SaleReport = () => {
   const brandData = useSelector((state) => state.reportSaleSlice.bData);
 
   // console.log("pdata", productData?.productInfo);
-  // console.log("wdata", weekelyData);
+  console.log("wdata", weekelyData);
+  console.log("wdata", monthlyData);
   // console.log("tdata", todayData);
   // console.log("bdata", brandData);
 
@@ -204,22 +205,22 @@ const SaleReport = () => {
           </Link>
         </div>
         {/* weekely sale */}
-        {/* {show === "weekely" ? (
+        {show === "weekely" ? (
           <div className="basis-2/3 border-[1px] border-[var(--border-color)] p-5 rounded-[3px]">
             <p className=" text-[20px] font-medium text-[var(--secondary-color)] mb-3">
               Weekly Sales
             </p>
             <p className=" text-[14px] font-normal text-[var(--gray-color)]  mb-3">
-              Total {weekelyData?.total_weekely_sale_amount.toFixed(2)} k Sales
+              Total {weekelyData?.weekly_sale_total} k Sales
             </p>
             <div className="flex items-stretch gap-3">
               <div className="basis-3/5">
-                <SaleTinyBarChart wdata={wdata?.weekely_sales} tag={show}/>
+                <SaleTinyBarChart wdata={wdata?.weekely_sale} tag={show}/>
               </div>
               <div className="basis-2/5 flex flex-col gap-5">
                 <div className=" flex justify-center gap-2">
                   <p className=" w-12 h-12 border-[1px] border-[var(--border-color)] text-[var(--secondary-color)] flex justify-center items-center rounded-[5px]">
-                    {weekelyData?.weekely_highest_sale[0]?.dayName.substring(
+                    {weekelyData?.weekely_highest_sale?.sale_date.substring(
                       0,
                       1
                     )}
@@ -233,21 +234,17 @@ const SaleReport = () => {
                       />
                       <span className=" text-green-500">
                         {
-                          weekelyData?.weekely_highest_sale[0]
-                            ?.highestPercentage
+                          weekelyData?.weekly_highest_percentage
                         }
                       </span>
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {weekelyData?.weekely_highest_sale[0]?.highest_sale_date}
+                      {weekelyData?.weekely_highest_sale?.sale_date}
                     </p>
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
-                      {weekelyData?.weekely_highest_sale[0]?.highest_sale.toFixed(
-                        0,
-                        2
-                      )}
+                      {weekelyData?.weekely_highest_sale?.total}
                       k
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
@@ -270,7 +267,7 @@ const SaleReport = () => {
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
-                      {weekelyData?.weekely_average_amount.toFixed(2)}
+                      {weekelyData?.average}
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
                       kyats
@@ -279,7 +276,7 @@ const SaleReport = () => {
                 </div>
                 <div className=" flex justify-center gap-2">
                   <p className=" w-12 h-12 border-[1px] border-[var(--border-color)] flex justify-center items-center text-[var(--secondary-color)] rounded-[5px]">
-                    {weekelyData?.weekely_lowest_sale[0]?.dayName.substring(
+                    {weekelyData?.weekely_lowest_sale?.sale_date.substring(
                       0,
                       1
                     )}
@@ -292,18 +289,16 @@ const SaleReport = () => {
                         size={"1.3rem"}
                       />
                       <span className=" text-red-500">
-                        {weekelyData?.weekely_lowest_sale[0]?.lowestPercentage}
+                        {weekelyData?.weekly_lowest_percentage}
                       </span>
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {weekelyData?.weekely_lowest_sale[0]?.lowest_sale_date}
+                      {weekelyData?.weekely_lowest_sale?.sale_date}
                     </p>
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
-                      {weekelyData?.weekely_lowest_sale[0]?.lowest_sale.toFixed(
-                        2
-                      )}
+                      {weekelyData?.weekely_lowest_sale?.total}
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
                       kyats
@@ -315,7 +310,7 @@ const SaleReport = () => {
           </div>
         ) : (
           ""
-        )} */}
+        )}
 
         {/* monthly sale */}
         {show === "monthly" ? (

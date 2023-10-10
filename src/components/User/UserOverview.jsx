@@ -23,14 +23,13 @@ const UserOverview = () => {
   const dispatch = useDispatch();
   const token = Cookies.get("token");
   const { data } = useGetUsersQuery(token);
-  const users = useSelector((state) => state.userSlice.users);
   const [bannedUsers] = useBannedUsersMutation();
   const nav = useNavigate();
+  const users = useSelector((state) => state.userSlice.users);
 
   useEffect(() => {
-    dispatch(addUsers({ users: data }));
-    //console.log("data", data);
-    // console.log("users", users);
+    dispatch(addUsers(data?.users));
+    console.log("users", users);
   }, [data]);
 
   const bannedHandler = async (e, id) => {
@@ -47,9 +46,10 @@ const UserOverview = () => {
       if (result.isConfirmed) {
         Swal.fire("Banned!", "The user has been banned.", "success");
         const { data } = await bannedUsers({ id, token });
-        //console.log("bannedUsers", data);
-        liHandler("user banned")
-        nav("/banned-user");
+        setTimeout(()=>{
+          liHandler("user banned")
+          nav("/banned-user");
+        },1000)
       }
     });
   };

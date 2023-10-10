@@ -5,24 +5,48 @@ import { Button } from "@mantine/core";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { MdArrowForwardIos } from "react-icons/md";
 import { useContextCustom } from "../../context/stateContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { addBannedUsers } from "../../redux/services/userSlice";
-import { useGetBannedUsersQuery } from "../../redux/api/userApi";
+import { useGetBannedUsersQuery, useRestoreUserMutation } from "../../redux/api/userApi";
+import Swal from "sweetalert2";
 
 const BannedUser = () => {
   const { liHandler } = useContextCustom();
   const token = Cookies.get("token");
   const dispatch = useDispatch();
   const { data } = useGetBannedUsersQuery(token);
+  const nav=useNavigate();
+  const[restoreUser]=useRestoreUserMutation();
   const bannedUsers = useSelector((state) => state.userSlice.bannedUsers);
-  // console.log("ddd", data);
+  // console.log("ddd", data?.users);
   // console.log("bannedUsers", bannedUsers);
 
   useEffect(() => {
-    dispatch(addBannedUsers({ bannedUsers: data }));
+    dispatch(addBannedUsers( data?.users));
   }, [data]);
+
+  const RestoreHandler=(e,id)=>{
+    e.preventDefault();
+    Swal.fire({
+      title: "Are you sure to restore the user?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, restore!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Restored!", "The user has been restored.", "success");
+        const { data } = await restoreUser({ id, token });
+        console.log("restore Users", data);
+        liHandler("user overview")
+        nav("/user-overview");
+      }
+    });
+  }
 
   return (
     <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
@@ -124,7 +148,7 @@ const BannedUser = () => {
                     {bannedUser?.created_at.substring(0, 10)}
                   </td>
                   <td className="px-1 pe-4 py-4 text-center">
-                    <button className="w-[100px] h-[30px] font-semibold text-[16px] bg-transparent text-[var(--secondary-color)] border-[1px] border-[var(--border-color)] rounded-[5px] ">
+                    <button onClick={(e)=>RestoreHandler(e,bannedUser?.id)} className="w-[100px] h-[30px] font-semibold text-[16px] bg-transparent text-[var(--secondary-color)] border-[1px] border-[var(--border-color)] rounded-[5px] ">
                       Restore
                     </button>
                   </td>
