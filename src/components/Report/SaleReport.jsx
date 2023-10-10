@@ -49,7 +49,8 @@ const SaleReport = () => {
 
   // console.log("pdata", productData?.productInfo);
   console.log("wdata", weekelyData);
-  console.log("wdata", monthlyData);
+  console.log("mdata", monthlyData);
+  console.log('weeke',weekelyData?.weekly_lowest_sale?.sale_date)
   // console.log("tdata", todayData);
   // console.log("bdata", brandData);
 
@@ -220,7 +221,7 @@ const SaleReport = () => {
               <div className="basis-2/5 flex flex-col gap-5">
                 <div className=" flex justify-center gap-2">
                   <p className=" w-12 h-12 border-[1px] border-[var(--border-color)] text-[var(--secondary-color)] flex justify-center items-center rounded-[5px]">
-                    {weekelyData?.weekely_highest_sale?.sale_date.substring(
+                    {weekelyData?.weekly_highest_sale?.sale_date.substring(
                       0,
                       1
                     )}
@@ -239,12 +240,12 @@ const SaleReport = () => {
                       </span>
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {weekelyData?.weekely_highest_sale?.sale_date}
+                      {weekelyData?.weekly_highest_sale?.sale_date}
                     </p>
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
-                      {weekelyData?.weekely_highest_sale?.total}
+                      {weekelyData?.weekly_highest_sale?.total}
                       k
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
@@ -276,7 +277,7 @@ const SaleReport = () => {
                 </div>
                 <div className=" flex justify-center gap-2">
                   <p className=" w-12 h-12 border-[1px] border-[var(--border-color)] flex justify-center items-center text-[var(--secondary-color)] rounded-[5px]">
-                    {weekelyData?.weekely_lowest_sale?.sale_date.substring(
+                    {weekelyData?.weekly_lowest_sale?.sale_date.substring(
                       0,
                       1
                     )}
@@ -293,12 +294,12 @@ const SaleReport = () => {
                       </span>
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
-                      {weekelyData?.weekely_lowest_sale?.sale_date}
+                      {weekelyData?.weekly_lowest_sale?.sale_date}
                     </p>
                   </div>
                   <div className="ms-auto">
                     <p className=" text-white text-[14px] font-semibold">
-                      {weekelyData?.weekely_lowest_sale?.total}
+                      {weekelyData?.weekly_lowest_sale?.total}
                     </p>
                     <p className=" text-[var(--secondary-color)] font-normal text-[12px]">
                       kyats
