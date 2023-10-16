@@ -34,7 +34,7 @@ const AddProductInfoPreview = () => {
       photo: photo,
     };
     const res = await createProduct({ product, token });
-    console.log("res", res);
+    //console.log("res", res);
     //console.log("pppp", product);
 
     setShowModal(true);

@@ -56,6 +56,8 @@ const EditProductInfo = () => {
               onChange={(e) => dispatch(editProductBrandID(e.target.value))}
               className="brand-dropdown brand-select "
             >
+                            <option className="hidden">choose brand </option>
+
               {brands?.map((brand) => {
                 return (
                   <option

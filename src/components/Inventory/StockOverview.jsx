@@ -183,7 +183,7 @@ const StockOverview = () => {
                             In Stock
                           </p>
                         ) : null}
-                        {stock?.total_stock <= 10 && stock?.total_stock > 0 ? (
+                        {stock?.total_stock < 10 && stock?.total_stock > 0 ? (
                           <p className="ms-auto w-32 py-1 text-center rounded-full border border-[#F8CE8A] text-[#F8CE8A] bg-[#7b5c2b33]">
                             Low Stock
                           </p>

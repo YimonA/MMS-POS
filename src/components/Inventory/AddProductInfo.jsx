@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useGetBrandsQuery } from "../../redux/api/logoApi";
 
 const AddProductInfo = () => {
-
   const {
     productName,
     setProductName,
@@ -24,13 +23,12 @@ const AddProductInfo = () => {
     setStock,
     nextStepperHandler,
   } = useContextCustom();
-  const[page,setPage]=useState(1);
+  const [page, setPage] = useState(1);
   const token = Cookies.get("token");
   const { data } = useGetBrandsQuery(token);
 
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.logoSlice.brands);
-  
 
   useEffect(() => {
     dispatch(addBrands({ brands: data?.data }));
@@ -39,7 +37,7 @@ const AddProductInfo = () => {
   const nextHandler = () => {
     nextStepperHandler(4);
   };
-  
+
   return (
     <div className=" ">
       <form
@@ -71,10 +69,11 @@ const AddProductInfo = () => {
             </label>
             <select
               name="brand"
-              value={brand?brand:setBrand(brands[0].id)}
+              value={brand}
               onChange={(e) => setBrand(e.target.value)}
               className="brand-dropdown brand-select "
             >
+              <option className="hidden">choose brand </option>
               {brands?.map((brand) => {
                 return (
                   <option
@@ -112,7 +111,7 @@ const AddProductInfo = () => {
             </label>
             <select
               name="unit"
-              value={unit?unit:setUnit('single')}
+              value={unit ? unit : setUnit("single")}
               onChange={(e) => setUnit(e.target.value)}
               className="brand-dropdown "
             >
