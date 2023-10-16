@@ -16,13 +16,16 @@ const StockOverview = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const token = Cookies.get("token");
-  const { data } = useGetStocksQuery({ token, page });
+  const { data,refetch } = useGetStocksQuery({ token, page });
   const stocks = useSelector((state) => state.stockSlice.stocks);
 
   useEffect(() => {
     dispatch(addStocks({ stocks: data?.data }));
   }, [data]);
   //console.log("data", stocks);
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div>
