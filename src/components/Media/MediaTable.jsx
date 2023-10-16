@@ -27,11 +27,8 @@ const MediaTable = ({ imgs }) => {
     dispatch(addPhotos({ photos: imgs }));
   }, [imgs]);
 
-  const deletePhotoHandler = async (e, id) => {
+  const deletePhotoHandler = async (e,id) => {
     e.stopPropagation();
-    const { data } = await deletePhoto({ id, token });
-    //console.log("del", data);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -44,12 +41,12 @@ const MediaTable = ({ imgs }) => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
         const { data } = await deletePhoto({ id, token });
-        //console.log('del',data);
+        // console.log('del',data);
       }
     });
   };
 
-  const copyHandler = (e, copytext) => {
+  const copyHandler = (e,copytext) => {
     e.stopPropagation();
     navigator.clipboard.writeText(copytext);
     // console.log("a", a);
@@ -82,53 +79,46 @@ const MediaTable = ({ imgs }) => {
           </tr>
         </thead>
         <tbody className=" text-gray-100">
-          {imgs !== null
-            ? imgs?.map((photo, index) => {
-                return (
-                  <tr
-                    onClick={() => imgModalHandler(index)}
-                    key={photo?.id}
-                    className=" border-b border-b-gray-700 cursor-pointer"
-                  >
-                    <td className="px-1 text-center  py-4">{index + 1}</td>
-                    <td className="px-1 text-end py-4 ">{photo?.name}</td>
-                    <td className="px-1 text-end py-4">{photo.user_name}</td>
-                    <td className="px-1 py-4 text-end">{photo?.extension}</td>
-                    <td className="px-1 pe-4 py-4 text-end">
-                      {Math.ceil(Number(photo?.fileSize) / 1028)} MB
-                    </td>
+          {imgs!==null?
+          imgs?.map((photo, index) => {
+            return (
+              <tr onClick={() => imgModalHandler(index)}
+              key={photo?.id} className=" border-b border-b-gray-700 cursor-pointer">
+                <td className="px-1 text-center  py-4">{index + 1}</td>
+                <td
+                  className="px-1 text-end py-4 "
+                >
+                  {photo?.name}
+                </td>
+                <td className="px-1 text-end py-4">{photo.user_name}</td>
+                <td className="px-1 py-4 text-end">{photo?.extension}</td>
+                <td className="px-1 pe-4 py-4 text-end">{Math.ceil(Number(photo?.fileSize)/1028)} MB</td>
 
-                    <td>
-                      <div className="w-[60px] mx-auto flex justify-end items-center gap-2 z-20">
-                        <button
-                          onClick={(e) => deletePhotoHandler(e, photo?.id)}
-                          className={`text-[--secondary-color] basis-1/2 hover:text-[#8AB4F8]px-1 `}
-                        >
-                          <RiDeleteBinLine size={"1.3rem"} />
-                        </button>
-                        <button
-                          // onClick={() => {navigator.clipboard.writeText(this.state.textToCopy)}}
+                <td>
+                  <div className="w-[60px] mx-auto flex justify-end items-center gap-2 z-20">
+                    <button
+                      onClick={(e) => deletePhotoHandler(e,photo?.id)}
+                      className={`text-[--secondary-color] basis-1/2 hover:text-[#8AB4F8]px-1 `}
+                    >
+                      <RiDeleteBinLine size={"1.3rem"} />
+                    </button>
+                    <button
+                      // onClick={() => {navigator.clipboard.writeText(this.state.textToCopy)}}
 
-                          onClick={(e) => copyHandler(e, photo?.url)}
-                          className={`text-[--secondary-color] basis-1/2 hover:text-[#8AB4F8]px-1 `}
-                        >
-                          <BiCopy size={"1.3rem"} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })
-            : ""}
+                      onClick={(e) => copyHandler(e,photo?.url)}
+                      className={`text-[--secondary-color] basis-1/2 hover:text-[#8AB4F8]px-1 `}
+                    >
+                      <BiCopy size={"1.3rem"} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          }):''}
         </tbody>
       </table>
       {showModal ? (
-        <MediaImgDetail
-          show={true}
-          imgIndex={imgIndex}
-          imgDetail={imgDetail}
-          imgs={imgs}
-        />
+        <MediaImgDetail show={true} imgIndex={imgIndex} imgDetail={imgDetail} imgs={imgs} />
       ) : (
         ""
       )}

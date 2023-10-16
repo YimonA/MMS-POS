@@ -15,7 +15,7 @@ export const StateContextProvider = ({ children }) => {
 
   const [productName, setProductName] = useState();
   const [brand, setBrand] = useState();
-  const [unit, setUnit] = useState();
+  const [unit, setUnit] = useState('single');
   const [productInfo, setProductInfo] = useState();
   const [stock, setStock] = useState();
   const [actualPrice, setActualPrice] = useState();
@@ -25,54 +25,43 @@ export const StateContextProvider = ({ children }) => {
   const nextStepperHandler = (endpoint) => {
     if (current < endpoint) {
       setCurrent(current + 1);
+      // console.log('current',current);
     }
-    
-    //else if (current === 4) {
-    //   setCurrent(1);
-    // }
   };
-  // for sidebar
 
-  const [sidebarActived,setSidebarActived]=useState('overview');
+  // for sidebar
+  const [sidebarActived,setSidebarActived]=useState();
   const liHandler = (liname) => {
     setSidebarActived(liname);
   };
 
 //brand add
 const [showBrandAdd,setShowBrandAdd]=useState(false);
+const [showBrandModal,setShowBrandModal]=useState('image');
+const[editBrandPhoto,setEditBrandPhoto]=useState();
 
-  //pagi
-  // const [brandPgNum,setBrandPgNum]=useState(1);
-
+  const [UID, setUID] = useState();
   //for user info
-  const[uName,setUName]=useState('Ma Ma');
-  const[uDOB,setUDOB]=useState('2/2/1990');
-  const[uGender,setUGender]=useState('female');
-  const[uAddress,setUAddress]=useState('ygn');
-  const[uPosition,setUPosition]=useState('staff');
-  const[uEmail,setUEmail]=useState('mama@gmail.com');
-  const[uPhone,setUPhone]=useState('098888889');
-  const[uPassword,setUPassword]=useState('mama1234');
-  const[uConfirmPassword,setUConfirmPassword]=useState('mama1234');
-  const[uPhoto,setUPhoto]=useState('https://h.mmsdev.site/storage/photos/7lmPwtTkHZlfeEsRyzd1e73S0x5LFDoysKWeZifU.jpg');
-
-  //for product detail
-  const[pdata,setPData]=useState();
-
-  const [editName, setEditName] = useState();
-  const [editBrand, setEditBrand] = useState();
-  const [editUnit, setEditUnit] = useState();
-  const [editProductInfo, setEditProductInfo] = useState();
-  const [editStock, setEditStock] = useState(3);
-  const [editSalePrice, setEditSalePrice] = useState();
-  const [editActualPrice, setEditActualPrice] = useState();
-  const [editPhoto,setEditPhoto]=useState(null);
+  const[uName,setUName]=useState('');
+  const[uDOB,setUDOB]=useState('');
+  const[uGender,setUGender]=useState('male');
+  const[uAddress,setUAddress]=useState('');
+  const[uPosition,setUPosition]=useState('');
+  const[uEmail,setUEmail]=useState('');
+  const[uPhone,setUPhone]=useState('');
+  const[uPassword,setUPassword]=useState('');
+  const[uConfirmPassword,setUConfirmPassword]=useState('');
+  const[uPhoto,setUPhoto]=useState('');
 
 //add stock
 const[stockProductID,setStockProductID]=useState();
 
-const[editProduct,setEditProduct]=useState();
+//add brand
+const[addBrandPhoto,setAddBrandPhoto]=useState();
+
   const data = {
+    saleClose,setSaleClose,
+    UID, setUID,
     productName,
     setProductName,
     brand,
@@ -87,26 +76,10 @@ const[editProduct,setEditProduct]=useState();
 
     uName,setUName,uDOB,setUDOB,uGender,setUGender,uAddress,setUAddress,uPosition,setUPosition,uEmail,setUEmail,uPhone,setUPhone,uPassword,setUPassword,uConfirmPassword,setUConfirmPassword,uPhoto,setUPhoto,
 
-    pdata,setPData,
-    // editProduct,setEditProduct,
-    editName,
-    setEditName,
-    editBrand,
-    setEditBrand,
-    editUnit,
-    setEditUnit,
-    editProductInfo,
-    setEditProductInfo,
-    editStock,
-    setEditStock,
-    editActualPrice,setEditActualPrice,
-    editSalePrice,
-    setEditSalePrice,editPhoto,setEditPhoto,
-    showBrandAdd,setShowBrandAdd,
-    // brandPgNum,setBrandPgNum
+    showBrandAdd,setShowBrandAdd,showBrandModal,setShowBrandModal,
+    addBrandPhoto,setAddBrandPhoto,editBrandPhoto,setEditBrandPhoto,
 
     stockProductID,setStockProductID,
-    saleClose,setSaleClose
   };
 
   return <StateContext.Provider value={data}>{children}</StateContext.Provider>;

@@ -29,9 +29,6 @@ const MediaGrid = ({ imgs }) => {
   }, [imgs]);
 
   const deletePhotoHandler = async (id) => {
-    const { data } = await deletePhoto({ id, token });
-    //console.log("del", data);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -44,7 +41,7 @@ const MediaGrid = ({ imgs }) => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
         const { data } = await deletePhoto({ id, token });
-        //console.log('del',data);
+        // console.log('del',data);
       }
     });
   };
@@ -89,12 +86,7 @@ const MediaGrid = ({ imgs }) => {
         );
       })}
       {showModal ? (
-        <MediaImgDetail
-          show={true}
-          imgIndex={imgIndex}
-          imgDetail={imgDetail}
-          imgs={imgs}
-        />
+        <MediaImgDetail show={true} imgIndex={imgIndex} imgDetail={imgDetail} imgs={imgs} />
       ) : (
         ""
       )}

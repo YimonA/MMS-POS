@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import { BsArrowLeft } from "react-icons/bs";
 import { RiDeleteBackLine } from "react-icons/ri";
 import { BsSearch } from "react-icons/bs";
@@ -12,18 +11,19 @@ import {
   removeFromCart,
   addItemsQuantity,
   subtractItemsQuantity,
-  addCurrentItem,
+  addCurrentItem,clearCart
 } from "../redux/services/cashierSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useVoucherMutation } from "../redux/api/cashierApi";
-import SaleCloseGuard from "./SaleCloseGuard";
+import SaleCloseGuard from "../pages/SaleCloseGuard";
+import { Loader } from "@mantine/core";
 
 const Cashier = () => {
   const nav = useNavigate();
-  const [voucher] = useVoucherMutation();
+  const [voucher,{isLoading}] = useVoucherMutation();
   const dispatch = useDispatch();
   const token = Cookies.get("token");
-  const { data } = useGetProductsQuery(token);
+  const { data,isLoading:loading } = useGetProductsQuery(token);
   const products = useSelector((state) => state.productSlice.products);
   const { cartItems, currentItem, currentQty, tax, totalCost, taxCost } =
     useSelector((state) => state.cashierSlice);
@@ -33,8 +33,6 @@ const Cashier = () => {
   // console.log("currentItem", currentItem);
   // console.log("currentQty", currentQty);
   // console.log("totalCost", totalCost);
-  // console.log('cartItems',cartItems);
-  // console.log('cartItems',cartItems);
 
   useEffect(() => {
     dispatch(addProducts({ products: data?.data }));
@@ -42,6 +40,9 @@ const Cashier = () => {
     // console.log("products", products);
   }, [data]);
 
+  useEffect(()=>{
+dispatch(clearCart());
+  },[])
   const cartItemsHandler = (product) => {
     if (product.total_stock >= 1) {
       dispatch(addToCart(product));
@@ -64,11 +65,11 @@ const Cashier = () => {
         quantity: item.quantity,
       };
     });
-    //console.log("cart items", items);
+    // console.log("cart items", items);
 
     const content = {
-      customer_name: user.name,
-      phone_number: user.phone_number,
+      customer_name: user?.name,
+      phone_number: user?.phone_number,
       items: items,
     };
     const strData = JSON.stringify(content);
@@ -76,19 +77,15 @@ const Cashier = () => {
   }
 
   const paymentHandler = async () => {
-    if(cartItems.length>0){
     try {
       const strData = payment();
-      const stringData = await voucher({token,strData});
-      // console.log('strData',strData);
-      // console.log('stringData',stringData);
-      if(stringData?.data?.data) {
-          nav("/voucher",{state:{voucher:stringData?.data?.data}});
+      const res = await voucher({token,strData});
+      if(res?.data?.products) {
+          nav("/voucher");
       }
     } catch (error) {
       console.log(error);
     }
-  }
   };
 
   return (
@@ -129,7 +126,14 @@ const Cashier = () => {
           </div>
           {/* product card start*/}
           <div className=" flex flex-wrap gap-10 p-5 py-10 sidebar-height overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-slate-800 ">
-            {products?.map((product) => {
+            {
+            loading ? (
+                <div className=" flex justify-center items-center gap-2">
+                  <Loader color="white" size="xs" />
+                  <span>Loading....</span>
+                </div>
+              ) : (
+            products?.map((product) => {
               return (
                 <div
                   key={product?.id}
@@ -150,12 +154,12 @@ const Cashier = () => {
                       {product?.sale_price} Ks
                     </p>
                     <p className=" text-[14px] text-red-500 opacity-70 px-5 font-bold text-right">
-                      {product?.total_stock === 0 ? "Out of Stock" : ""}
+                      {product?.total_stock <= 0 ? "Out of Stock" : ""}
                     </p>
                   </div>
                 </div>
               );
-            })}
+            }))}
             {/* product card end*/}
           </div>
         </div>
@@ -307,7 +311,13 @@ const Cashier = () => {
               onClick={paymentHandler}
               className=" w-full h-[60px] border-[1px] border-[var(--border-color)] text-[16px] font-semibold flex justify-center items-center text-[var(--font-color)]"
             >
-              Payment
+              {isLoading ? (
+                <div className=" flex justify-center items-center gap-2">
+                  <Loader color="white" size="xs" />
+                  <span>Loading....</span>
+                </div>
+              ) : (
+              'Payment')}
             </button>
           </div>
           {/* calculator end */}

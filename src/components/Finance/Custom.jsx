@@ -19,6 +19,7 @@ const Custom = () => {
   const [endDate, setEndDate] = useState();
   const [cRecords, setCRecords] = useState();
   const [cPage, setCPage] = useState();
+  const [exportValue, setExportValue] = useState();
 
   useEffect(() => {
     const a = startDate?.toISOString().slice(0, 10);
@@ -96,26 +97,26 @@ const Custom = () => {
           Sale Overview
         </p>
         <div className=" flex items-baseline gap-4">
-          <select
+          {/* <select
             placeholder="Export"
             name="sort"
-            value={sortValue}
-            onChange={(e) => setSortValue(e.target.value)}
+            value={exportValue}
+            onChange={(e) => setExportValue(e.target.value)}
             className="recent-dropdown "
           >
             <option value="" className="recent-dropdown hidden">
               Export
             </option>
-            <option value="last" className="recent-dropdown">
+            <option value="PDF" className="recent-dropdown">
               PDF
             </option>
-            <option value="first" className="recent-dropdown">
+            <option value="print" className="recent-dropdown">
               Print
             </option>
-            <option value="copy" className="recent-dropdown">
-              Copy
+            <option value="Excel" className="recent-dropdown">
+              Excel
             </option>
-          </select>
+          </select> */}
           <div className=" flex justify-start items-baseline gap-2">
             <DateInput
               valueFormat="YYYY-MM-DD"
@@ -249,7 +250,9 @@ const Custom = () => {
         {/* total calculate end*/}
 
         {/* pagination start*/}
-        <div>
+        <div className="ms-auto"
+
+        >
           <Button.Group className=" pt-10 flex justify-end">
             <Button
               onClick={prev}

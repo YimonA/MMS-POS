@@ -14,8 +14,10 @@ import {
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { addPhotos } from "../../redux/services/mediaSlice";
+import { useContextCustom } from "../../context/stateContext";
 
 const Media = () => {
+  const { isActivedMedia } = useContextCustom();
   // console.log(isActivedMedia);
   const token = Cookies.get("token");
   const { data } = useGetPhotoQuery(token);
@@ -39,11 +41,11 @@ const Media = () => {
     setShowPhoto(window.URL.createObjectURL(fileListObj[0]));
 
     let photos = new FormData();
-    for (let i = 0; i < fileListObj.length; i++) {
-      photos.append("photos[]", fileListObj[i], fileListObj[i].name);
+    for(let i = 0; i < fileListObj.length ;i++){
+      photos.append("photos[]",fileListObj[i],fileListObj[i].name)
       // console.log('first',fileListObj[i],'sec',fileListObj[i].name)
     }
-    const response = await uploadPhoto({ token, photos });
+    const response = await uploadPhoto({token,photos});
     // console.log('response',response)
   };
 
@@ -128,41 +130,7 @@ const Media = () => {
         )}
       </div>
 
-      {/* pagination */}
-      <div>
-        <Button.Group className=" border-[--border-color] pt-20 flex justify-end">
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowBackIosNew />
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            1
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            2
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            3
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowForwardIos />
-          </Button>
-        </Button.Group>
-      </div>
+      
     </div>
   );
 };

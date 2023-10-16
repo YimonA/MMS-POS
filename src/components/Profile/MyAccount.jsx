@@ -11,6 +11,7 @@ import { useChangeProfilePWMutation } from "../../redux/api/profileApi";
 import Cookies from "js-cookie";
 import { useLogoutMutation } from "../../redux/api/authApi";
 import { removeUser } from "../../redux/services/authSlice";
+import { Loader } from "@mantine/core";
 
 const MyAccount = () => {
   const { liHandler } = useContextCustom();
@@ -19,7 +20,7 @@ const MyAccount = () => {
   const [changePassword, setChangePassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const token = Cookies.get("token");
-  const [changeProfilePW] = useChangeProfilePWMutation();
+  const [changeProfilePW,{isLoading}] = useChangeProfilePWMutation();
   const nav = useNavigate();
   const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const MyAccount = () => {
     if (data) {
       nav("/login");
     }
-    //console.log(data);
+    // console.log(data);
   };
 
   const changePWHandler = (e) => {
@@ -42,7 +43,7 @@ const MyAccount = () => {
       password: changePassword,
       password_confirmation: confirmPassword,
     };
-    //console.log("pw", newData);
+    // console.log("pw", newData);
     changeProfilePW({ newData, token });
     logoutHandler();
   };
@@ -87,7 +88,7 @@ const MyAccount = () => {
 
               <div className="w-fit">
                 <h1 className=" text-[26px] text-white font-semibold">
-                  {user?.name}{" "}
+                  {user?.name}
                 </h1>
                 <span className=" text-[14px] font-medium text-[#C5C1C1]">
                   {user?.role} /
@@ -116,12 +117,8 @@ const MyAccount = () => {
               size={"1rem"}
               className="text-[var(--font-color)]"
             />
-            <p
-              onClick={() => setShowChangePassword(false)}
-              className="text-white text-[16px] cursor-pointer"
-            >
-              Personal
-            </p>
+            <p onClick={() => setShowChangePassword(false)}
+ className="text-white text-[16px] cursor-pointer">Personal</p>
             <BsInfoCircleFill
               size={"1rem"}
               className="ms-4 text-[var(--font-color)] "
@@ -181,8 +178,14 @@ const MyAccount = () => {
                   className="w-[380px] h-[50px] px-5 py-1 border-2 rounded-[5px] border-[var(--border-color)] bg-[var(--base-color)] text-[var(--secondary-color)]"
                 />
               </div>
-              <button className="w-[200px] h-[40px] myBlueBtn font-medium text-[14px] my-5 mx-auto">
-                Change Password
+              <button className="w-[200px] h-[40px] myBlueBtn font-medium text-[14px] my-5 ms-auto">
+              {isLoading ? (
+            <div className=" flex justify-center items-center gap-2">
+              <Loader color="white" size="xs" />
+              <span>Loading....</span>
+            </div>
+          ) : (
+                'Change Password')}
               </button>
             </form>
           ) : (

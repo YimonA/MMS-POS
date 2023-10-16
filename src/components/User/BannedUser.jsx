@@ -1,36 +1,48 @@
 import { useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
-import { BsPlusLg } from "react-icons/bs";
 import { Button } from "@mantine/core";
-import { MdArrowBackIosNew } from "react-icons/md";
-import { MdArrowForwardIos } from "react-icons/md";
 import { useContextCustom } from "../../context/stateContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { addBannedUsers } from "../../redux/services/userSlice";
-import { useGetBannedUsersQuery, useRestoreUserMutation } from "../../redux/api/userApi";
+import {
+  addBannedUsers,
+  setSearchBannedUser,
+} from "../../redux/services/userSlice";
+import {
+  useGetBannedUsersQuery,
+  useRestoreUserMutation,
+} from "../../redux/api/userApi";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const BannedUser = () => {
+  const [sortValue, setSortValue] = useState("A-Z");
+
   const { liHandler } = useContextCustom();
   const token = Cookies.get("token");
   const dispatch = useDispatch();
-  const { data } = useGetBannedUsersQuery(token);
-  const nav=useNavigate();
-  const[restoreUser]=useRestoreUserMutation();
+  const { data, refetch } = useGetBannedUsersQuery(token);
+  const nav = useNavigate();
+  const [restoreUser] = useRestoreUserMutation();
   const bannedUsers = useSelector((state) => state.userSlice.bannedUsers);
-  // console.log("ddd", data?.users);
-  // console.log("bannedUsers", bannedUsers);
+  const searchBannedUser = useSelector(
+    (state) => state.userSlice.searchBannedUser
+  );
 
+  // console.log("ddd", data);
+  // console.log("bannedUsers", bannedUsers);
   useEffect(() => {
-    dispatch(addBannedUsers( data?.users));
+    refetch();
+  }, []);
+  useEffect(() => {
+    dispatch(addBannedUsers(data?.users));
   }, [data]);
 
-  const RestoreHandler=(e,id)=>{
+  const RestoreHandler = (e, id) => {
     e.preventDefault();
     Swal.fire({
-      title: "Are you sure to restore the user?",
+      title: "Are you sure to restore the staff?",
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
@@ -39,28 +51,39 @@ const BannedUser = () => {
       confirmButtonText: "Yes, restore!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire("Restored!", "The user has been restored.", "success");
+        Swal.fire("Restored!", "The staff has been restored.", "success");
         const { data } = await restoreUser({ id, token });
-        console.log("restore Users", data);
-        liHandler("user overview")
-        nav("/user-overview");
+        // console.log("restore Users", data);
+        liHandler("staff overview");
+        nav("/staff-overview");
       }
     });
-  }
+  };
+
+  const rows = bannedUsers?.filter((bannedUser) => {
+    if (searchBannedUser === "") {
+      return bannedUser;
+    } else if (
+      bannedUser?.name
+        .toLowerCase()
+        .includes(searchBannedUser?.toLocaleLowerCase())
+    ) {
+      return bannedUsers;
+    }
+  });
 
   return (
     <div className="container mx-auto py-4 px-5 bg-[--base-color] pb-20">
       <div className=" flex justify-between items-center mb-5">
         <div>
-          <p className="breadcrumb-title	">Banned User </p>
+          <p className="breadcrumb-title	">Banned Staff </p>
           <p className=" text-[14px] text-white opacity-70 select-none">
-            User / Banned User Overview
+            Staff / Banned Staff Overview
           </p>
         </div>
-        
       </div>
       {/* <Breadcrumb breadcrumbItems={breadcrumbItems} /> */}
-      <p className="breadcrumb-title mb-5">Banned User Overview</p>
+      <p className="breadcrumb-title mb-5">Banned Staff Overview</p>
 
       <div className=" flex justify-between items-center mb-[30px]">
         <div className="basis-1/3 h-[34px] border-gray-700 rounded border flex items-center px-2 py-1">
@@ -68,6 +91,8 @@ const BannedUser = () => {
           <input
             type="text"
             placeholder="search"
+            value={searchBannedUser}
+            onChange={(e) => dispatch(setSearchBannedUser(e.target.value))}
             className=" w-[250px] outline-none bg-transparent text-gray-300 text-sm font-semibold"
           />
         </div>
@@ -81,15 +106,15 @@ const BannedUser = () => {
           <select
             placeholder="Export"
             name="sort"
-            // value={sortValue}
-            // onChange={(e) => setSortValue(e.target.value)}
+            value={sortValue}
+            onChange={(e) => setSortValue(e.target.value)}
             className="recent-dropdown "
           >
-            {/* <option value="" className="hidden">
-              Export
-            </option> */}
-            <option value="last" className="recent-dropdown">
-              Last
+            <option value="A-Z" className="recent-dropdown">
+              A-Z
+            </option>
+            <option value="Z-A" className="recent-dropdown">
+              Z-A
             </option>
           </select>
           <label
@@ -132,29 +157,61 @@ const BannedUser = () => {
         </thead>
         <tbody className=" text-gray-100">
           {bannedUsers?.length > 0 ? (
-            bannedUsers?.map((bannedUser, index) => {
-              return (
-                <tr
-                  key={bannedUser?.id}
-                  className=" border-b border-b-gray-700 cursor-pointer"
-                >
-                  <td className="px-1 text-center  py-4">{index + 1}</td>
-                  <td className="px-1 text-end py-4 ">{bannedUser?.name}</td>
-                  <td className="px-1 text-end py-4">{bannedUser.role}</td>
-                  <td className="px-1 pe-4 py-4 text-end">
-                    {bannedUser?.email}
-                  </td>
-                  <td className="px-1 pe-4 py-4 text-end">
-                    {bannedUser?.created_at.substring(0, 10)}
-                  </td>
-                  <td className="px-1 pe-4 py-4 text-center">
-                    <button onClick={(e)=>RestoreHandler(e,bannedUser?.id)} className="w-[100px] h-[30px] font-semibold text-[16px] bg-transparent text-[var(--secondary-color)] border-[1px] border-[var(--border-color)] rounded-[5px] ">
-                      Restore
-                    </button>
-                  </td>
-                </tr>
-              );
-            })
+            sortValue == "A-Z" ? (
+              rows
+                ?.sort((a, b) => a.name.localeCompare(b.name))
+                ?.map((bannedUser, index) => (
+                  <tr
+                    key={bannedUser?.id}
+                    className=" border-b border-b-gray-700 cursor-pointer"
+                  >
+                    <td className="px-1 text-center  py-4">{index + 1}</td>
+                    <td className="px-1 text-end py-4 ">{bannedUser?.name}</td>
+                    <td className="px-1 text-end py-4">{bannedUser.role}</td>
+                    <td className="px-1 pe-4 py-4 text-end">
+                      {bannedUser?.email}
+                    </td>
+                    <td className="px-1 pe-4 py-4 text-end">
+                      {bannedUser?.created_at.substring(0, 10)}
+                    </td>
+                    <td className="px-1 pe-4 py-4 text-center">
+                      <button
+                        onClick={(e) => RestoreHandler(e, bannedUser?.id)}
+                        className="w-[100px] h-[30px] font-semibold text-[16px] bg-transparent text-[var(--secondary-color)] border-[1px] border-[var(--border-color)] rounded-[5px] "
+                      >
+                        Restore
+                      </button>
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              rows
+                ?.sort((a, b) => b.name.localeCompare(a.name))
+                ?.map((bannedUser, index) => (
+                  <tr
+                    key={bannedUser?.id}
+                    className=" border-b border-b-gray-700 cursor-pointer"
+                  >
+                    <td className="px-1 text-center  py-4">{index + 1}</td>
+                    <td className="px-1 text-end py-4 ">{bannedUser?.name}</td>
+                    <td className="px-1 text-end py-4">{bannedUser.role}</td>
+                    <td className="px-1 pe-4 py-4 text-end">
+                      {bannedUser?.email}
+                    </td>
+                    <td className="px-1 pe-4 py-4 text-end">
+                      {bannedUser?.created_at.substring(0, 10)}
+                    </td>
+                    <td className="px-1 pe-4 py-4 text-center">
+                      <button
+                        onClick={(e) => RestoreHandler(e, bannedUser?.id)}
+                        className="w-[100px] h-[30px] font-semibold text-[16px] bg-transparent text-[var(--secondary-color)] border-[1px] border-[var(--border-color)] rounded-[5px] "
+                      >
+                        Restore
+                      </button>
+                    </td>
+                  </tr>
+                ))
+            )
           ) : (
             <tr>
               <td className="px-1 text-center py-4 " colSpan={6}>
@@ -165,43 +222,6 @@ const BannedUser = () => {
         </tbody>
       </table>
       {/* stock table end */}
-
-      {/* pagination start */}
-      <div>
-        <Button.Group className=" border-[--border-color] pt-20 flex justify-end">
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowBackIosNew />
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            1
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            2
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            3
-          </Button>
-          <Button
-            variant="default"
-            className=" text-[--secondary-color] hover:text-[--font-color] hover:bg-transparent"
-          >
-            <MdArrowForwardIos />
-          </Button>
-        </Button.Group>
-      </div>
-      {/* pagination end */}
     </div>
   );
 };

@@ -10,8 +10,8 @@ import { mediaApi } from "./api/mediaApi";
 import mediaSlice from "./services/mediaSlice";
 import { productApi } from "./api/productApi";
 import productSlice from "./services/productSlice";
-import { brandApi } from "./api/brandApi";
-import brandSlice from "./services/brandSlice";
+import { logoApi } from "./api/logoApi";
+import logoSlice from "./services/logoSlice";
 
 import { userApi } from "./api/userApi";
 import userSlice from "./services/userSlice";
@@ -23,9 +23,6 @@ import reportSaleSlice from "./services/reportSaleSlice";
 import { reportStockApi } from "./api/reportStockApi";
 import reportStockSlice from "./services/reportStockSlice";
 
-import { financeApi } from "./api/financeApi";
-import financeSlice from "./services/financeSlice";
-
 import { profileApi } from "./api/profileApi";
 import profileSlice from "./services/profileSlice";
 import { cashierApi } from "./api/cashierApi";
@@ -36,7 +33,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [mediaApi.reducerPath]: mediaApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
-    [brandApi.reducerPath]: brandApi.reducer,
+    [logoApi.reducerPath]: logoApi.reducer,
     [stockApi.reducerPath]: stockApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
@@ -44,12 +41,11 @@ export const store = configureStore({
     [overviewApi.reducerPath]: overviewApi.reducer,
     [reportStockApi.reducerPath]: reportStockApi.reducer,
     [cashierApi.reducerPath]: cashierApi.reducer,
-    [financeApi.reducerPath]: financeApi.reducer,
 
     authSlice: authSlice,
     mediaSlice: mediaSlice,
     productSlice: productSlice,
-    brandSlice: brandSlice,
+    logoSlice: logoSlice,
     shop: shopSlice,
     stockSlice: stockSlice,
     userSlice: userSlice,
@@ -58,7 +54,7 @@ export const store = configureStore({
     reportSaleSlice: reportSaleSlice,
     reportStockSlice: reportStockSlice,
     cashierSlice: cashierSlice,
-    financeSlice:financeSlice
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -67,14 +63,13 @@ export const store = configureStore({
       authApi.middleware,
       mediaApi.middleware,
       productApi.middleware,
-      brandApi.middleware,
+      logoApi.middleware,
       stockApi.middleware,
       profileApi.middleware,
       userApi.middleware,
       overviewApi.middleware,
       reportSaleApi.middleware,
       reportStockApi.middleware,
-      cashierApi.middleware,
-      financeApi.middleware
+      cashierApi.middleware
     ),
 });

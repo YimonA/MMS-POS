@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Home from "../components/Home";
+// const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 import Login from "../pages/Login";
 import Error from "../pages/Error";
 
@@ -9,9 +10,19 @@ import MediaImgDetail from "../components/Media/MediaImgDetail";
 
 import MyAccount from "../components/Profile/MyAccount";
 
+import EditAccount from "../components/User/EditAccount";
 import UserOverview from "../components/User/UserOverview";
+import CreateUser from "../components/User/CreateUser";
 import BannedUser from "../components/User/BannedUser";
 import UserAccount from "../components/User/UserAccount";
+
+import AddProduct from "../components/Inventory/AddProduct";
+import Products from "../components/Inventory/Products";
+import ProductDetail from "../components/Inventory/ProductDetail";
+import ProductEdit from "../components/Inventory/ProductEdit";
+import Stock from "../components/Inventory/Stock";
+import Brand from "../components/Inventory/Brand";
+import BrandDetail from "../components/Inventory/BrandDetail";
 
 // import Shop from "../pages/Shop";
 import Cashier from "../pages/Cashier";
@@ -24,6 +35,10 @@ import Yearly from "../components/Finance/Yearly";
 import Custom from "../components/Finance/Custom";
 
 import SaleReport from "../components/Report/SaleReport";
+import StockReport from "../components/Report/StockReport";
+import StockEdit from "../components/Inventory/StockEdit";
+import StockDetail from "../components/Inventory/StockDetail";
+import BrandEdit from "../components/Inventory/BrandEdit";
 
 // import Products from "../components/Products";
 // import StockControl from "../components/StockControl";
@@ -42,7 +57,12 @@ const Path = () => {
             </React.Suspense>
           }
         /> */}
-        <Route path="/" element={<Dashboard view={<Home />} />} />
+        <Route
+          path="/"
+          element={
+              <Dashboard view={<Home />} />
+          }
+        />
         <Route path="/*" element={<Error />} />
 
         {/* media routes start*/}
@@ -63,27 +83,69 @@ const Path = () => {
         <Route path="/cashier" element={<Cashier />} />
         {/* sale routes end*/}
 
-        {/* user routes start*/}
+        {/* staff routes start*/}
 
         <Route
-          path="/user-overview"
+          path="/staff-overview"
           element={<Dashboard view={<UserOverview />} />}
         />
         <Route
-          path="/user-profile/:id"
+          path="/staff-edit/:id"
+          element={<Dashboard view={<EditAccount />} />}
+        />
+        <Route
+          path="/staff-profile/:id"
           element={<Dashboard view={<UserAccount />} />}
         />
-
         <Route
-          path="/banned-user"
+          path="/create-staff"
+          element={<Dashboard view={<CreateUser />} />}
+        />
+        <Route
+          path="/banned-staff"
           element={<Dashboard view={<BannedUser />} />}
         />
-        {/* user routes start*/}
+        {/* staff routes start*/}
 
+        {/* inventory routes start*/}
+        <Route
+          path="/add-product"
+          element={<Dashboard view={<AddProduct />} />}
+        />
+        <Route path="/products" element={<Dashboard view={<Products />} />} />
+        <Route
+          path="/product-detail/:id"
+          element={<Dashboard view={<ProductDetail />} />}
+        />
+        <Route
+          path="/product-edit/:id"
+          element={<Dashboard view={<ProductEdit />} />}
+        />
+        <Route path="/stock-control" element={<Dashboard view={<Stock />} />} />
+        <Route
+          path="/stock-add/:id"
+          element={<Dashboard view={<StockEdit />} />}
+        />
+        <Route
+          path="/stock-detail/:id"
+          element={<Dashboard view={<StockDetail />} />}
+        />
+        <Route path="/brand" element={<Dashboard view={<Brand />} />} />
+        <Route
+          path="/brand-detail/:id"
+          element={<Dashboard view={<BrandDetail />} />}
+        />
+        <Route path="/brand-edit/:id" element={<Dashboard view={<BrandEdit />} />} />
+        {/* inventory routes start*/}
         {/* sale routes start*/}
 
         <Route path="/recent" element={<Dashboard view={<Recent />} />} />
         {/* sale routes start*/}
+
+        <Route
+          path="/report-stock"
+          element={<Dashboard view={<StockReport />} />}
+        />
 
         <Route
           path="/report-sale"

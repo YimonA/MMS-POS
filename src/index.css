@@ -36,6 +36,9 @@ body {
 .sidebar-height {
   height: calc(100vh - 45px);
 }
+.home-width {
+  width: calc(100vw - 270px);
+}
 
 .glass-login {
   /* From https://css.glass */

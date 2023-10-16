@@ -35,7 +35,7 @@ const SaleTinyBarChart = ({ wdata,tag }) => {
         <CartesianGrid strokeDasharray="3 3" />
         {tag==="weekely"?
         <>
-        <XAxis dataKey="sale_date"/>
+        <XAxis dataKey="dayName"/>
         <YAxis dataKey="total" /></>:''}
 
         {tag==="monthly"?

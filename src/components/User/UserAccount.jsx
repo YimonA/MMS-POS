@@ -8,7 +8,10 @@ import { LuPhoneCall } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useGetSingleUsersQuery } from "../../redux/api/userApi";
-import { addSingleUser } from "../../redux/services/userSlice";
+import {
+  addSingleUser,
+  editUserName,editUserAddress,editUserGender,editUserDOB,editUserEmail,editUserPhone,editUserPhoto
+} from "../../redux/services/userSlice";
 import { useEffect } from "react";
 
 const UserAccount = () => {
@@ -18,11 +21,15 @@ const UserAccount = () => {
   const token = Cookies.get("token");
   const { data } = useGetSingleUsersQuery({ id, token });
   const singleUser = useSelector((state) => state.userSlice.singleUser);
-
   useEffect(() => {
-    dispatch(addSingleUser({ singleUser: data }));
-    // console.log("data", data);
-    // console.log("singleUser", singleUser);
+    dispatch(addSingleUser(data));
+    dispatch(editUserName(data?.name));
+    dispatch(editUserAddress(data?.address));
+    dispatch(editUserGender(data?.gender));
+    dispatch(editUserDOB(data?.date_of_birth));
+    dispatch(editUserEmail(data?.email));
+    dispatch(editUserPhone(data?.phone_number));
+    dispatch(editUserPhoto(data?.photo));
   }, [data]);
 
   return (
@@ -30,19 +37,19 @@ const UserAccount = () => {
       {/* Breadcrumg start */}
       <div className=" flex justify-between items-center mb-20">
         <div>
-          <p className="breadcrumb-title	">User</p>
+          <p className="breadcrumb-title	">Staff</p>
           <p className=" text-[14px] text-white opacity-70  select-none">
-            User / Information
+            Staff / Information
           </p>{" "}
         </div>
-        {/* <Link to={"/profile-edit"}>
+        <Link to={`/staff-edit/${singleUser?.id}`}>
           <button
             onClick={() => liHandler("edit")}
             className="w-[140px] h-[40px] font-semibold text-[16px] myBlueBtn"
           >
-            Edit User
+            Edit Staff
           </button>
-        </Link> */}
+        </Link>
       </div>
       {/* Breadcrumg end */}
 
@@ -76,13 +83,13 @@ const UserAccount = () => {
               </div>
             </div>
             <div className=" flex justify-end items-center gap-5 z-20">
-              <button className="inline-block bg-gray-700 w-10 h-10 p-3 rounded-full cursor-pointer">
+              <button className="inline-block bg-gray-700 hover:bg-zinc-500 w-10 h-10 p-3 rounded-full cursor-pointer ">
                 <LuMailOpen
                   size={"1rem"}
                   className="text-[var(--secondary-color)]"
                 />
               </button>
-              <button className="inline-block bg-gray-700 w-10 h-10 p-3 rounded-full cursor-pointer">
+              <button className="inline-block bg-gray-700 hover:bg-zinc-500 w-10 h-10 p-3 rounded-full cursor-pointer ">
                 <LuPhoneCall
                   size={"1rem"}
                   className="text-[var(--secondary-color)]"

@@ -4,10 +4,11 @@ const initialState = {
   brands: null,
   brandsPerPage:null,
   singleBrand:null,
+  searchTerm: "",
 };
 
-export const brandSlice = createSlice({
-  name: "brandSlice",
+export const logoSlice = createSlice({
+  name: "logoSlice",
   initialState,
   reducers: {
     addBrands: (state, { payload }) => {
@@ -17,10 +18,16 @@ export const brandSlice = createSlice({
       state.brandsPerPage = payload.brandsPerPage;
     },
     addSingleBrand: (state, { payload }) => {
-      state.singleBrand = payload.singleBrand;
+      state.singleBrand = payload;
     },
+    setSearchTerm:(state,{payload})=>{
+      state.searchTerm=payload;
+  },
+  clearSearchTerm:(state)=>{
+    state.searchTerm='';
+}
   },
 });
 
-export const { addBrands,addBrandsPerPage,addSingleBrand } = brandSlice.actions;
-export default brandSlice.reducer;
+export const {setSearchTerm,clearSearchTerm, addBrands,addBrandsPerPage,addSingleBrand } = logoSlice.actions;
+export default logoSlice.reducer;
