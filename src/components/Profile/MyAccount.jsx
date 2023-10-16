@@ -25,7 +25,7 @@ const MyAccount = () => {
   const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.authSlice.user);
+  const user =JSON.parse(Cookies.get("user"));
 
   const logoutHandler = async () => {
     const data = await logout(token);

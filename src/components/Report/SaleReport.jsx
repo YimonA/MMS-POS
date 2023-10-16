@@ -409,7 +409,7 @@ const SaleReport = () => {
         )}
 
         {/* yearly sale */}
-        {show === "yearly" ? (
+        {/* {show === "yearly" ? (
           <div className="basis-2/3 border-[1px] border-[var(--border-color)] p-5 rounded-[3px]">
             <p className=" text-[20px] font-medium text-[var(--secondary-color)] mb-3">
               Yearly Sales
@@ -501,7 +501,7 @@ const SaleReport = () => {
           </div>
         ) : (
           ""
-        )}
+        )} */}
       </div>
 
       {/* sale week end */}
