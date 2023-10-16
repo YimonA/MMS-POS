@@ -1,6 +1,6 @@
 import { FiUploadCloud } from "react-icons/fi";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useContextCustom } from "../../context/stateContext";
 import { editProductPhoto } from "../../redux/services/productSlice";
@@ -12,6 +12,7 @@ const EditProductSelectImg = () => {
   const [active, setActive] = useState();
   const imgs = useSelector((state) => state.mediaSlice.photos);
   const dispatch = useDispatch();
+  const nav = useNavigate();
 
   const showBtn = (imgId, imgUrl) => {
     setActive(imgId);
@@ -23,17 +24,21 @@ const EditProductSelectImg = () => {
     dispatch(editProductPhoto(picture));
     setShowModal(false);
   };
+  const selectImgHandler = () => {
+    liHandler("media");
+    setShowModal(false);
+    nav("/media");
+  };
 
   return (
-    <div className="w-[900px] h-[500px] flex flex-col justify-center items-center gap-10 px-5 ">
+    <div className="w-[700px] h-[420px] flex flex-col justify-center items-center gap-10 px-5 ">
       <div
-        className="h-[400px] flex flex-wrap gap-5 justify-start items-center 
-      "
+       className="h-[330px] flex flex-wrap gap-5 justify-center items-start overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-slate-800 
+       "
       >
         {/* overflow-y-scroll */}
         {/* Upload img start */}
-        <div onClick={() => liHandler("media")} className=" cursor-pointer">
-          <Link to={"/media"}>
+        <div onClick={selectImgHandler} className=" cursor-pointer">
             <div className="w-[150px] h-[140px] bg-black flex flex-col justify-center items-center gap-3 border border-[var(--border-color)]">
               <div className=" w-[100px] h-[100px] rounded-full bg-[var(--gray-color)] opacity-5 absolute -top-[25%] -left-[25%]"></div>
               <div className=" w-[67px] h-[67px] border-dashed border-2 border-[var(--secondary-color)] rounded-full bg-[--base-color] flex justify-center items-center">
@@ -47,7 +52,6 @@ const EditProductSelectImg = () => {
                 Image
               </p>
             </div>
-          </Link>
         </div>
 
         {/* Upload img end */}
@@ -76,7 +80,7 @@ const EditProductSelectImg = () => {
         onClick={insertHandler}
         className={`${
           showInsertBtn ? "opacity-100" : "opacity-0"
-        } w-[100px] h-[40px] font-semibold text-[16px] myBlueBtn ml-auto`}
+        } w-[100px] h-[40px] font-semibold text-[16px] myBlueBtn ml-auto mb-5`}
       >
         insert
       </button>

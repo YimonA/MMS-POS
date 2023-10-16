@@ -25,7 +25,7 @@ const Cashier = () => {
   const token = Cookies.get("token");
   const { data,isLoading:loading } = useGetProductsQuery(token);
   const products = useSelector((state) => state.productSlice.products);
-  const { cartItems, currentItem, currentQty, tax, totalCost, taxCost } =
+  const { cartItems, currentItem, tax, totalCost, taxCost } =
     useSelector((state) => state.cashierSlice);
   const user = useSelector((state) => state.authSlice.user);
 
