@@ -9,56 +9,34 @@ import {
 } from "recharts";
 import PropTypes from "prop-types";
 import { PureComponent, useEffect, useState } from "react";
+import { useContextCustom } from "../../context/stateContext";
 
-// class CustomizedLabel extends PureComponent {
-//   render() {
-//     const { x, y, stroke, value } = this.props;
-
-//     return (
-//       <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
-//         {value}
-//       </text>
-//     );
-//   }
-// }
-
-// class CustomizedAxisTick extends PureComponent {
-//   render() {
-//     const { x, y, stroke, payload } = this.props;
-
-//     return (
-//       <g transform={`translate(${x},${y})`}>
-//         <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-//           {payload.value}
-//         </text>
-//       </g>
-//     );
-//   }
-// }
-
-const SaleLineChart = ({ oData, tag }) => {
+const SaleLineChart = ({ oData }) => {
   SaleLineChart.propTypes = {
     oData: PropTypes.object,
-    tag: PropTypes.string,
+    // tag: PropTypes.string,
   };
-  const [data, setData] = useState();
+  const [data, setData] = useState(oData?.monthly_sales);
+  const {tagValue}=useContextCustom();
+// const [tagValue,setTagValue]=useState(tag)
 
+// useEffect(()=>{
+// setTagValue(tag)
+// },[tag])
   useEffect(() => {
     graphHandler();
-  }, []);
-
-  useEffect(() => {
-    graphHandler();
-  }, [tag]);
+  }, [tagValue]);
 
   function graphHandler() {
-    if (tag === "weekly") {
+    if (tagValue === "weekly") {
       const data = oData?.weekely_sales;
       setData(data);
-    } else if (tag === "monthly") {
+    }
+    if (tagValue === "monthly") {
       const data = oData?.monthly_sales;
       setData(data);
-    } else if (tag === "yearly") {
+    }
+    if (tagValue === "yearly") {
       const data = oData?.yearly_sales;
       setData(data);
     }
@@ -80,15 +58,9 @@ const SaleLineChart = ({ oData, tag }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          {tag === "weeekly" ? (
-            <XAxis dataKey="sale_date" />
-          ) : tag === "monthly" ? (
-            <XAxis 
-            // dataKey='sale_date' 
-            />
-          ) : tag === "yearly" ? (
-            <XAxis dataKey="month" />
-          ) : null}
+          {tagValue === "monthly" ? <XAxis /> : null}
+          {tagValue === "weeekly" ? <XAxis dataKey="sale_date" /> : null}
+          {tagValue === "yearly" ? <XAxis dataKey="month" /> : null}
           <YAxis />
           <Tooltip />
           <Line

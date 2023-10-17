@@ -59,8 +59,11 @@ const[stockProductID,setStockProductID]=useState();
 //add brand
 const[addBrandPhoto,setAddBrandPhoto]=useState();
 
+//sale line chart
+const [tagValue,setTagValue]=useState('monthly')
+
   const data = {
-    saleClose,setSaleClose,
+    saleClose,setSaleClose,tagValue,setTagValue,
     UID, setUID,
     productName,
     setProductName,

@@ -20,8 +20,7 @@ import { useGetOverviewQuery } from "../redux/api/overviewApi";
 import { addOverview } from "../redux/services/overviewSlice";
 
 const Home = () => {
-  const [show, setShow] = useState("monthly");
-  const { liHandler } = useContextCustom();
+  const { liHandler,tagValue,setTagValue } = useContextCustom();
   const token = Cookies.get("token");
   const { data: overviewData } = useGetOverviewQuery(token);
   const { data } = useGetPhotoQuery(token);
@@ -151,10 +150,10 @@ const Home = () => {
 
             <Button.Group className=" border-[--border-color] flex justify-end basis-1/3">
               <Button
-                onClick={() => setShow("yearly")}
+                onClick={() => setTagValue("yearly")}
                 variant="default"
                 className={`${
-                  show === "yearly"
+                  tagValue === "yearly"
                     ? " text-[--font-color]"
                     : " text-[--secondary-color]"
                 } hover:text-[--font-color] hover:bg-transparent rounded-[5px]`}
@@ -162,10 +161,10 @@ const Home = () => {
                 Year
               </Button>
               <Button
-                onClick={() => setShow("monthly")}
+                onClick={() => setTagValue("monthly")}
                 variant="default"
                 className={`${
-                  show === "monthly"
+                  tagValue === "monthly"
                     ? " text-[--font-color]"
                     : " text-[--secondary-color]"
                 } hover:text-[--font-color] hover:bg-transparent rounded-[5px]`}
@@ -173,10 +172,10 @@ const Home = () => {
                 Month
               </Button>
               <Button
-                onClick={() => setShow("weekly")}
+                onClick={() => setTagValue("weekly")}
                 variant="default"
                 className={`${
-                  show === "weekly"
+                  tagValue === "weekly"
                     ? " text-[--font-color]"
                     : " text-[--secondary-color]"
                 }  text-[--font-color] hover:text-[--font-color] hover:bg-transparent rounded-[5px]`}
@@ -187,7 +186,7 @@ const Home = () => {
             {/* btn group end */}
           </div>
           {/* Breadcrumgbend */}
-          <SaleLineChart oData={oData} tag={show} />
+          <SaleLineChart oData={oData}  />
         </div>
         <div className=" basis-1/3 px-5">
           <p className=" text-[24px] text-[var(--secondary-color)] mb-3">
