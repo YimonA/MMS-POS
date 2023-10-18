@@ -11,6 +11,11 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect } from "react";
 
+// import ReactTOPdf from "react-to-pdf";
+// import { DownloadTableExcel } from "react-export-table-to-excel";
+
+// const ref = React.createRef();
+
 const Yearly = () => {
   const token = Cookies.get("token");
   const { liHandler } = useContextCustom();
@@ -20,6 +25,8 @@ const Yearly = () => {
   const [yRecords, setYRecords] = useState();
   const [yearTag, setYearTag] = useState(null);
   const [exportValue, setExportValue] = useState();
+
+  // const tableRef = useRef(null);
 
   useEffect(() => {
     fetchYearData();
@@ -33,8 +40,9 @@ const Yearly = () => {
       responseType: "financeData",
     });
     const ydata = JSON.parse(data);
+    console.log('ydata',ydata)
     setYRecords(ydata);
-    setYearTag(ydata.yearly_sale_overviews[0].year);
+    setYearTag(year);
   };
 
   const fetchYearData = async () => {
@@ -154,7 +162,10 @@ const Yearly = () => {
           </button>
         </div>
       </div>
-      <table className="pdf_container w-full text-gray-300 border border-gray-700 text-sm mb-20 daily-table">
+
+      <table
+        className="pdf_container w-full text-gray-300 border border-gray-700 text-sm mb-20 daily-table"
+      >
         <thead>
           <tr className="">
             <th className=" py-4 border-b text-center border-gray-600 px-1 uppercase font-medium">
@@ -182,8 +193,8 @@ const Yearly = () => {
         </thead>
 
         <tbody>
-          {yRecords?.yearly_sale_overviews?.data.length > 0 ? (
-            yRecords?.yearly_sale_overviews?.data?.map((record, index) => {
+          {yRecords?.length > 0 ? (
+            yRecords?.map((record, index) => {
               return (
                 <tr key={record?.id} className=" ">
                   <td className="px-1 text-center  py-4">{index + 1}</td>
@@ -206,6 +217,7 @@ const Yearly = () => {
             </tr>
           )}
         </tbody>
+      
       </table>
       {/* showList end */}
 
@@ -262,14 +274,14 @@ const Yearly = () => {
               Total
             </p>
             <p className=" text-[var(--secondary-color)] text-end text-[22px] font-semibold">
-            {yRecords?Math.round(yRecords?.yearly_total_sale_overview?.total):null}
+              {yRecords?.yearly_total_sale_overview?Math.round(yRecords?.yearly_total_sale_overview?.total):null}
             </p>
           </div>
         </div>
         {/* total calculate end*/}
 
         {/* pagination start*/}
-        <div>
+        {/* <div>
           <Button.Group className=" pt-10 flex justify-end">
             <Button
               onClick={prev}
@@ -296,7 +308,7 @@ const Yearly = () => {
               <MdArrowForwardIos />
             </Button>
           </Button.Group>
-        </div>
+        </div> */}
         {/* pagination end*/}
       </div>
     </div>

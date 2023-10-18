@@ -8,36 +8,32 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import PropTypes from "prop-types";
-import { PureComponent, useEffect, useState } from "react";
-import { useContextCustom } from "../../context/stateContext";
+import { useEffect, useState } from "react";
 
-const SaleLineChart = ({ oData }) => {
+const SaleLineChart = ({ oData, tag }) => {
   SaleLineChart.propTypes = {
     oData: PropTypes.object,
-    // tag: PropTypes.string,
+    tag: PropTypes.string,
   };
-  const [data, setData] = useState(oData?.monthly_sales);
-  const {tagValue}=useContextCustom();
-// const [tagValue,setTagValue]=useState(tag)
+  const [data, setData] = useState();
 
-// useEffect(()=>{
-// setTagValue(tag)
-// },[tag])
   useEffect(() => {
     graphHandler();
-  }, [tagValue]);
+  }, []);
+
+  useEffect(() => {
+    graphHandler();
+  }, [tag]);
 
   function graphHandler() {
-    if (tagValue === "weekly") {
-      const data = oData?.weekely_sales;
+    if (tag === "weekly") {
+      const data = oData?.total_sales;
       setData(data);
-    }
-    if (tagValue === "monthly") {
-      const data = oData?.monthly_sales;
+    } else if (tag === "monthly") {
+      const data = oData?.total_sales;
       setData(data);
-    }
-    if (tagValue === "yearly") {
-      const data = oData?.yearly_sales;
+    } else if (tag === "yearly") {
+      const data = oData?.total_sales;
       setData(data);
     }
   }
@@ -58,10 +54,20 @@ const SaleLineChart = ({ oData }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          {tagValue === "monthly" ? <XAxis /> : null}
-          {tagValue === "weeekly" ? <XAxis dataKey="sale_date" /> : null}
-          {tagValue === "yearly" ? <XAxis dataKey="month" /> : null}
-          <YAxis />
+          {tag === "weeekly" ? (
+            <XAxis
+            // dataKey="sale_date"
+            />
+          ) : tag === "monthly" ? (
+            <XAxis
+            // dataKey='sale_date'
+            />
+          ) : tag === "yearly" ? (
+            <XAxis
+            // dataKey="sale_date"
+            />
+          ) : null}
+          <YAxis dataKey="total" />
           <Tooltip />
           <Line
             type="monotone"

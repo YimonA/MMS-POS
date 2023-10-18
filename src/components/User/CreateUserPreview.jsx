@@ -39,31 +39,27 @@ const CreateUserPreview = () => {
   }, []);
 
   const CreateUserHandler = async () => {
-    try {
-      const user = {
-        name: uName,
-        email: uEmail,
-        password: uPassword,
-        phone_number: uPhone,
-        address: uAddress,
-        gender: uGender,
-        // date_of_birth: uDOB.toISOString().substring(0,10),
-        date_of_birth: new Date(uDOB).toISOString().slice(0, 10),
-        role: uPosition,
-        photo: uPhoto,
-        password_confirmation: uConfirmPassword,
-      };
-      const data = await createUser({ user, token });
-      //console.log("res", data);
-      // console.log("dddd",data?.data?.message);
+    const user = {
+      name: uName,
+      email: uEmail,
+      password: uPassword,
+      phone_number: uPhone,
+      address: uAddress,
+      gender: uGender,
+      date_of_birth: new Date(uDOB).toLocaleDateString("es-CL"),
+      role: uPosition,
+      photo: uPhoto,
+      password_confirmation: uConfirmPassword,
+    };
+    const data = await createUser({ user, token });
+    console.log("dddd",data);
+    // console.log("dddd",data?.data?.message);
 
-      // console.log("name", user);
-      if (data?.data?.message == "Successfully created an account") {
-        setShowModal(true);
-      }
-    } catch (err) {
-      console.log("err", err);
+    // console.log("name", user);
+    if (data?.data?.message == "Successfully created an account") {
+      setShowModal(true);
     }
+    // console.log("pppp", users);
   };
 
   return (
@@ -109,7 +105,7 @@ const CreateUserPreview = () => {
               </p>
               <p className=" font-medium text-[18px] text-white">: {uGender}</p>
               <p className=" font-medium text-[18px] text-white">
-                : {uDOB?uDOB.toISOString().substring(0, 10):null}
+              : {uDOB?uDOB.toLocaleDateString("es-CL"):null}
               </p>
               <p className=" font-medium text-[18px] text-white">
                 : {uPosition}

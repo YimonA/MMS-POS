@@ -17,13 +17,13 @@ const StockPieChart = ({ weekelyBrand }) => {
     weekelyBrand: PropTypes.array,
   };
   const data = weekelyBrand;
-  //  const [colors, setColors] = useState([
-  //   "bg-[#8AB4F8]",
-  //   "bg-[#56CA00]",
-  //   "bg-[#aa4d64]",
-  //   "bg-[#e8eaed]",
-  //   "bg-[#6a88b8]",
-  // ]);
+   const [colors, setColors] = useState([
+    "bg-[#8AB4F8]",
+    "bg-[#56CA00]",
+    "bg-[#aa4d64]",
+    "bg-[#e8eaed]",
+    "bg-[#6a88b8]",
+  ]);
 
   return (
     <div className="h-[240px] flex justify-start items-stretch py-3">
